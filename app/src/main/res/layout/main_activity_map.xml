@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.mapbox.mapboxsdk.maps.MapView>
+
+    <ImageView
+        android:id="@+id/ranking"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="658dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:onClick="onRankingClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cup" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="140dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="658dp"
+        android:layout_marginEnd="197dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:onClick="onProfileImageClick"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ranking"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/player_profile_picture"
+            android:layout_width="54dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/monster_l" />
+
+        <LinearLayout
+            android:layout_width="76dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/player_life_point"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@drawable/lp_bar"
+                android:gravity="center"
+                android:text="200 LP"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textColorHint="#00A52424"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/player_experience_point"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@drawable/xp_bar"
+                android:gravity="center"
+                android:text="150 XP"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textColorHint="#00A52424"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/player_position"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="357dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="528dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/ranking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/location" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
