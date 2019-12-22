@@ -1,5 +1,8 @@
 package com.albertinisodringa.pocketmonsters;
 
+/**
+ * Class that handles the Monster MapElement
+ */
 public class Monster implements MapElement {
     private int id;
     private String name;
@@ -7,6 +10,9 @@ public class Monster implements MapElement {
     private double lon;
     private MapElementSize size;
 
+    /**
+     * Instantiates a new Monster.
+     */
     public Monster() {
         this.id = 0;
         this.name = "";
@@ -15,6 +21,15 @@ public class Monster implements MapElement {
         this.size = MapElementSize.SMALL;
     }
 
+    /**
+     * Instantiates a new Monster.
+     *
+     * @param id   the id
+     * @param name the name
+     * @param lat  the lat
+     * @param lon  the lon
+     * @param size the size
+     */
     public Monster(int id, String name, double lat, double lon, MapElementSize size) {
         this.id = id;
         this.name = name;
@@ -30,13 +45,15 @@ public class Monster implements MapElement {
 
     @Override
     public void setId(int id) {
-
+        this.id = id;
     }
 
+    @Override
     public String getName() {
         return this.name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -48,7 +65,7 @@ public class Monster implements MapElement {
 
     @Override
     public void setLat(double lat) {
-
+        this.lat = lat;
     }
 
     @Override
@@ -58,7 +75,7 @@ public class Monster implements MapElement {
 
     @Override
     public void setLon(double lon) {
-
+        this.lon = lon;
     }
 
     @Override
@@ -68,7 +85,7 @@ public class Monster implements MapElement {
 
     @Override
     public void setSize(MapElementSize size) {
-
+        this.size = size;
     }
 
     @Override

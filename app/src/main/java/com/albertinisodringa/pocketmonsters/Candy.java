@@ -1,5 +1,8 @@
 package com.albertinisodringa.pocketmonsters;
 
+/**
+ * Class that handles the Candy MapElement
+ */
 public class Candy implements MapElement {
     private int id;
     private String name;
@@ -7,6 +10,9 @@ public class Candy implements MapElement {
     private double lon;
     private MapElementSize size;
 
+    /**
+     * Instantiates a new Candy.
+     */
     public Candy() {
         this.id = 0;
         this.name = "";
@@ -15,6 +21,15 @@ public class Candy implements MapElement {
         this.size = MapElementSize.SMALL;
     }
 
+    /**
+     * Instantiates a new Candy.
+     *
+     * @param id   the id
+     * @param name the name
+     * @param lat  the lat
+     * @param lon  the lon
+     * @param size the size
+     */
     public Candy(int id, String name, double lat, double lon, MapElementSize size) {
         this.id = id;
         this.name = name;
