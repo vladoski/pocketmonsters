@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:background="@drawable/ranking_bar"
+    android:background="@drawable/ranking_bar_prova2"
     android:padding="10dp">
 
     <TextView
@@ -43,7 +43,7 @@
             android:textAllCaps="false"
 
 
-            android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="30dp"
             android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center_vertical"
             android:text="150 XP"
-            android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:textSize="20dp" />
     </LinearLayout>
 
