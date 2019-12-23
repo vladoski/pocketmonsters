@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-                mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
                         mapboxMap.getUiSettings().setAttributionEnabled(false);
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                                 .build();
                         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
-
                         // Game API handler
                         ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", getString(R.string.api_url), getApplicationContext());
 
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         mapView.onResume();
-
     }
 
     @Override
