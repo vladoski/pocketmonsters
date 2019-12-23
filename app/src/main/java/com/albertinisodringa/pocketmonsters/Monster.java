@@ -60,7 +60,7 @@ public class Monster implements MapElement {
 
     @Override
     public double getLat() {
-        return 0;
+        return this.lat;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Monster implements MapElement {
 
     @Override
     public double getLon() {
-        return 0;
+        return this.lon;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class Monster implements MapElement {
 
     @Override
     public MapElementSize getSize() {
-        return null;
+        return this.size;
     }
 
     @Override

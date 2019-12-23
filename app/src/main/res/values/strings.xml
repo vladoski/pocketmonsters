@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PocketMonsters</string>
+    <string name="api_url">https://ewserver.di.unimi.it/mobicomp/mostri</string>
+    <string name="mapboxapi_access_token">pk.eyJ1Ijoicml0YWFsYmVydGluaSIsImEiOiJjazM3MWtibzIwNzZvM2dzYjFndmppdzVxIn0.jgVfMLD0Eu4w3SAuj27k9Q</string>
 </resources>
