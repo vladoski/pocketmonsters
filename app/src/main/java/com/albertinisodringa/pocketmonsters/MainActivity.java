@@ -1,10 +1,13 @@
 package com.albertinisodringa.pocketmonsters;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -67,17 +70,58 @@ public class MainActivity extends AppCompatActivity {
                                 .build();
                         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
+                        // SharedPreferences per salvare in modo persistente la session_id dell'API
+                        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
                         // Game API handler
-                        ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", getString(R.string.api_url), getApplicationContext());
+                        final ApiModel api = new ApiModel(getString(R.string.api_url), getApplicationContext());
 
-                        // Get the MapElements from the API
-                        getMap(api, symbolManager);
+                        // Write on sharedPreferences the new sessionId from signing up on the API, if there's no one inside sharedPreferences.
+                        // If it's present just read sessionId from sharedPreferences and set it to the ApiModel
+                        if (!sharedPreferences.contains("sessionId")) {
+                            api.registerAsync(new VolleyEventListener() {
+                                @Override
+                                public void onSuccess(Object returnFromCallback) {
+                                    String sessionId = getString(R.string.api_default_session_id); // Default session_id
+                                    if (returnFromCallback instanceof String) {
+                                        sessionId = (String) returnFromCallback;
+                                    }
+
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("sessionId", sessionId);
+                                    editor.apply();
+
+                                    // Set sessionId because it's null
+                                    api.setSessionId(sessionId);
+
+                                    // TODO: refactor this
+                                    // Get the MapElements from the API (async)
+                                    getMap(api, symbolManager);
+
+                                    // Get the player profile from the API (async) and edit the textviews for lifepoints and experience points
+                                    getProfile(api);
+                                }
+
+                                @Override
+                                public void onFailure(Exception error) {
+                                    Log.d("MainActivity", error.getMessage());
+                                }
+                            });
+                        } else {
+                            // Set sessionId from sharedPreferences because it's null
+                            api.setSessionId(getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE).getString("sessionId", null));
+
+                            // TODO: refactor this
+                            // Get the MapElements from the API (async)
+                            getMap(api, symbolManager);
+
+                            // Get the player profile from the API (async) and edit the textviews for lifepoints and experience points
+                            getProfile(api);
+                        }
                     }
                 });
             }
         });
-
     }
 
     @Override
@@ -154,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 // Displaying the MapElements on the MapBox map
                 List<MapElement> mapElementList = new ArrayList<>();
                 if (returnFromCallback instanceof List<?>) {
-                    mapElementList = (List<MapElement>) returnFromCallback; // Can't check type becuase it's a generic
+                    mapElementList = (List<MapElement>) returnFromCallback; // Can't check type becuase it's a generic, TODO: should refactor
                 }
 
                 for (int i = 0; i < mapElementList.size(); i++) {
@@ -201,9 +245,39 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                Log.d("MainActivity", "ErrorVlado");
+                Log.d("MainActivity", error.getMessage());
             }
         });
     }
 
+    /**
+     * Helper function
+     * Gets the player profile from the API, then edits the two TextViews (life points and experience points)
+     *
+     * @param api
+     */
+    private void getProfile(ApiModel api) {
+        api.getProfileAsync(new VolleyEventListener() {
+            @Override
+            public void onSuccess(Object returnFromCallback) {
+                Player player = new Player();
+                if (returnFromCallback instanceof Player) {
+                    player = (Player) returnFromCallback;
+                }
+
+                // Set life points on TextView
+                TextView lifePointsTextView = findViewById(R.id.player_life_point);
+                lifePointsTextView.setText(player.getLifePoints() + " LP");
+
+                // Set experience points on TextView
+                TextView experiencePointsTextView = findViewById(R.id.player_experience_point);
+                experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
+            }
+
+            @Override
+            public void onFailure(Exception error) {
+                Log.d("ProfileActivity", error.getMessage());
+            }
+        });
+    }
 }

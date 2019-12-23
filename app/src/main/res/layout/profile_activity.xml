@@ -28,7 +28,6 @@
         android:layout_marginTop="33dp"
         android:layout_marginBottom="71dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="Rita"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="25dp"
@@ -62,7 +61,7 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:paddingRight="10dp"
-                android:text="Life point:"
+                android:text="Life points:"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -74,7 +73,7 @@
                 android:background="@drawable/lp_bar"
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center"
-                android:text="200 LP"
+                android:text="0 LP"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textStyle="bold" />
 
@@ -93,7 +92,7 @@
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center_vertical"
                 android:paddingRight="10dp"
-                android:text="Experience point:"
+                android:text="Experience points:"
                 android:textAlignment="viewEnd"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
@@ -105,7 +104,7 @@
                 android:background="@drawable/xp_bar"
                 android:fontFamily="sans-serif-smallcaps"
                 android:gravity="center"
-                android:text="150 XP"
+                android:text="0 XP"
                 android:textColor="@color/common_google_signin_btn_text_dark_focused"
                 android:textStyle="bold" />
         </LinearLayout>
