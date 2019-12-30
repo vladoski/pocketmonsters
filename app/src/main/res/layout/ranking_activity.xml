@@ -63,7 +63,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_ranking"
         android:layout_width="match_parent"
-        android:layout_height="587dp"
+        android:layout_height="match_parent"
         android:padding="5dp"
         android:paddingBottom="10dp" />
 
