@@ -30,6 +30,19 @@ public class ApiModel {
 
     /**
      * Instantiates a new Api model.
+     * Useful before signing up on the API (registerAsync)
+     *
+     * @param apiUrl  the api url
+     * @param context the context
+     */
+    public ApiModel(String apiUrl, Context context) {
+        this.sessionId = null;
+        this.apiUrl = apiUrl;
+        ApiModel.requestQueue = Volley.newRequestQueue(context);
+    }
+
+    /**
+     * Instantiates a new Api model.
      *
      * @param sessionId the session id
      * @param apiUrl    the api url
@@ -103,7 +116,7 @@ public class ApiModel {
                 try {
                     player = new Player(
                             response.getString("username"),
-                            response.getString("img").getBytes(StandardCharsets.UTF_8),
+                            Base64.decode(response.getString("img"), Base64.DEFAULT),
                             response.getInt("lp"),
                             response.getInt("xp")
                     );
@@ -157,7 +170,7 @@ public class ApiModel {
                 try {
                     player = new Player(
                             response.getString("username"),
-                            response.getString("img").getBytes(StandardCharsets.UTF_8),
+                            Base64.decode(response.getString("img"), Base64.DEFAULT),
                             response.getInt("lp"),
                             response.getInt("xp")
                     );
@@ -282,7 +295,7 @@ public class ApiModel {
 
                         playerList.add(new Player(
                                 playerRankingJson.getString("username"),
-                                playerRankingJson.getString("img").getBytes(StandardCharsets.UTF_8),
+                                Base64.decode(playerRankingJson.getString("img"), Base64.DEFAULT),
                                 playerRankingJson.getInt("lp"),
                                 playerRankingJson.getInt("xp")
                         ));
@@ -339,7 +352,7 @@ public class ApiModel {
                     callback.onFailure(e);
                 }
 
-                callback.onSuccess(imageBase64.getBytes(StandardCharsets.UTF_8));
+                callback.onSuccess(Base64.decode(imageBase64, Base64.DEFAULT));
             }
 
         }, new Response.ErrorListener() {
