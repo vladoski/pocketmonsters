@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <ImageView
+        android:id="@+id/monster_picture"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/fight_text"
+        android:layout_width="368dp"
+        android:layout_height="196dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="26dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center_horizontal"
+        android:text="You have chosen to fight xxx . \n \n Continue?"
+        android:textColor="#000000"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/monster_picture" />
+
+    <ImageView
+        android:id="@+id/yes_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="97dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toStartOf="@+id/no_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fight_text"
+        app:srcCompat="@drawable/yes" />
+
+    <ImageView
+        android:id="@+id/no_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="46dp"
+        android:layout_marginEnd="67dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fight_text"
+        app:srcCompat="@drawable/no" />
+</androidx.constraintlayout.widget.ConstraintLayout>

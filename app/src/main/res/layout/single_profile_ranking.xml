@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/ranking_position"
-        android:layout_width="14dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:fontFamily="sans-serif-smallcaps"
@@ -21,7 +21,7 @@
 
     <ImageView
         android:id="@+id/player_profile_picture"
-        android:layout_width="20dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         tools:srcCompat="@tools:sample/avatars" />

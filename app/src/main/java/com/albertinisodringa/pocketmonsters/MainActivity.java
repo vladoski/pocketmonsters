@@ -14,6 +14,8 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
+import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 
@@ -53,12 +55,23 @@ public class MainActivity extends AppCompatActivity {
                         mapboxMap.getStyle().addImage("monster_s", BitmapFactory.decodeResource(getResources(), R.drawable.monster_s));
                         mapboxMap.getStyle().addImage("monster_m", BitmapFactory.decodeResource(getResources(), R.drawable.monster_m));
                         mapboxMap.getStyle().addImage("monster_l", BitmapFactory.decodeResource(getResources(), R.drawable.monster_l));
+                        mapboxMap.getStyle().addImage("candy_s", BitmapFactory.decodeResource(getResources(), R.drawable.candy_s));
+                        mapboxMap.getStyle().addImage("candy_m", BitmapFactory.decodeResource(getResources(), R.drawable.candy_m));
+                        mapboxMap.getStyle().addImage("candy_l", BitmapFactory.decodeResource(getResources(), R.drawable.candy_l));
 
                         // Handles symbols, annotations and markers for the MapBox API
                         final SymbolManager symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
                         symbolManager.setIconAllowOverlap(true);
                         symbolManager.setIconTranslate(new Float[]{-4f, 5f});
                         symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
+
+
+                      /*  symbolManager.addClickListener(new OnSymbolClickListener() {
+                            @Override
+                            public void onMapElementClick(Symbol mapElement) {
+                                String s = "";
+                            }
+                        });*/
 
                         // Set camera position on Milan
                         CameraPosition position = new CameraPosition.Builder()
@@ -177,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                         );
 
                     } else if (mapElement instanceof Candy) {
-                        String candyImageId = "monster_"; // TODO: after adding candy images, edit id to candy_
+                        String candyImageId = "candy_";
 
                         if (mapElement.getSize() == MapElementSize.SMALL) {
                             candyImageId += "s";
