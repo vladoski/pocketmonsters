@@ -366,6 +366,53 @@ public class ApiModel {
     }
 
     /**
+     * Gets the images of the MapElements present on the map, asynchronously from the API.
+     * Returns a byte[] to the callback
+     *
+     * @param mapElementId the map element id
+     * @param callback   the callback
+     */
+    public void getMapElementImageAsync(int mapElementId, final VolleyEventListener callback) {
+        final String apiUrlRequest = "/getimage.php";
+        JSONObject requestJson = new JSONObject();
+
+        try {
+            requestJson = new JSONObject("{\n" +
+                    "\t\"session_id\": \"" + getSessionId() + "\",\n" +
+                    "\t\"target_id\": " + mapElementId + "\n" +
+                    "}");
+            Log.d("ApiModel", requestJson.toString());
+        } catch (JSONException e) {
+            callback.onFailure(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("ApiModel", response.toString());
+
+                String imageBase64 = "";
+
+                try {
+                    imageBase64 = response.getString("img");
+                } catch (JSONException e) {
+                    callback.onFailure(e);
+                }
+
+                callback.onSuccess(Base64.decode(imageBase64, Base64.DEFAULT));
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onFailure(error);
+            }
+        });
+
+        ApiModel.requestQueue.add(request);
+    }
+
+    /**
      * Registers a new session/player profile, asynchronously from the API.
      * Returns the sessionId as a String to the callback
      *
