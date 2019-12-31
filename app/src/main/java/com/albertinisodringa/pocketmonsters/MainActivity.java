@@ -24,6 +24,7 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT
 public class MainActivity extends AppCompatActivity {
 
     private MapView mapView;
+    public static final String BUNDLE_MAPELEMENT = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +70,20 @@ public class MainActivity extends AppCompatActivity {
                         symbolManager.setIconTranslate(new Float[]{-4f, 5f});
                         symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
 
-
-                      /*  symbolManager.addClickListener(new OnSymbolClickListener() {
+                        symbolManager.addClickListener(new OnSymbolClickListener() {
                             @Override
-                            public void onMapElementClick(Symbol mapElement) {
-                                String s = "";
+                            public void onAnnotationClick(Symbol symbol) {
+                                FightFragment fightFragment = new FightFragment();
+
+                                Bundle args = new Bundle();
+
+                                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                                transaction.replace(R.id.fragment_container, fightFragment);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
                             }
-                        });*/
+                        });
 
                         // Set camera position on Milan
                         CameraPosition position = new CameraPosition.Builder()
@@ -214,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < mapElementList.size(); i++) {
-                    MapElement mapElement = mapElementList.get(i);
+                    final MapElement mapElement = mapElementList.get(i);
 
                     if (mapElement instanceof Monster) {
                         String monsterImageId = "monster_";
@@ -233,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
                                 .withIconSize(0.08f)
                                 .withIconOffset(new Float[]{0f, 0.2f})
                         );
+
 
                     } else if (mapElement instanceof Candy) {
                         String candyImageId = "candy_";

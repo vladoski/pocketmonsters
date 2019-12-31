@@ -8,7 +8,7 @@
     android:background="@drawable/background">
 
     <ImageView
-        android:id="@+id/monster_picture"
+        android:id="@+id/map_element_picture"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
@@ -33,7 +33,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/monster_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/map_element_picture" />
 
     <ImageView
         android:id="@+id/yes_button"
