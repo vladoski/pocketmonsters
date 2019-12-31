@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -145,17 +147,28 @@ public class ApiModel {
      * @param image    the image
      * @param callback the callback
      */
-// TODO: check if it's better to have a Player object passed as parameter
-    public void setProfileAsync(String name, byte[] image, final VolleyEventListener callback) {
+    // TODO: check if it's better to have a Player object passed as parameter
+    // TODO: make possible to edit only name or image by making attributes nullable
+    public void setProfileAsync(@Nullable String name, @Nullable byte[] image, final VolleyEventListener callback) {
         String apiUrlRequest = "/setprofile.php";
         JSONObject requestJson = new JSONObject();
 
         try {
-            requestJson = new JSONObject("{\n" +
-                    "\t\"session_id\": \"" + getSessionId() + "\",\n" +
-                    "\t\"username\": \"" + name + "\",\n" +
-                    "\t\"img\": \"" + Base64.encodeToString(image, Base64.DEFAULT) + "\"\n" +
-                    "}");
+            String requestJsonString = "{\n" +
+                    "\t\"session_id\": \"" + getSessionId() + "\"";
+
+            if (name != null) {
+                requestJsonString += ",\n\t\"username\": \"" + name + "\"";
+            }
+
+            if (image != null) {
+                requestJsonString += ",\n\t\"img\": \"" + Base64.encodeToString(image, Base64.DEFAULT) + "\"\n";
+            }
+
+            requestJsonString += "}";
+
+            requestJson = new JSONObject(requestJsonString);
+
             Log.d("ApiModel", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);

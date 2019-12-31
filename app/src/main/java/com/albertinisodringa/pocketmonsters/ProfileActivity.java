@@ -3,11 +3,13 @@ package com.albertinisodringa.pocketmonsters;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ public class ProfileActivity extends AppCompatActivity {
                     player = (Player) returnFromCallback;
                 }
 
+                final String playerUsername = player.getUsername(); // Used because the final requirement inside the anonymous class
+
                 // Set name on TextView
                 TextView nameTextView = findViewById(R.id.name);
                 nameTextView.setText(player.getUsername() == null ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
@@ -56,6 +60,18 @@ public class ProfileActivity extends AppCompatActivity {
                 // Set experience points on TextView
                 TextView experiencePointsTextView = findViewById(R.id.experience_point);
                 experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
+
+                // Image used as button for going to the ProfileEditActivity
+                ImageView editImageView = findViewById(R.id.editImageView);
+
+                editImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), ProfileEditActivity.class);
+                        intent.putExtra("profileUsername", playerUsername);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
