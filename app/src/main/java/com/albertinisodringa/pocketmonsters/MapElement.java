@@ -1,5 +1,9 @@
 package com.albertinisodringa.pocketmonsters;
 
+import com.google.gson.JsonElement;
+
+import org.json.JSONObject;
+
 /**
  * Interface that handles the MapElements present on the map (candies and monsters)
  */
@@ -98,4 +102,12 @@ public interface MapElement {
      * @param size the size of the MapElement
      */
     void setSize(MapElementSize size);
+
+    /**
+     * Gets a JSONObject that represent the MapElement
+     *
+     * @return
+     */
+    JSONObject getJson();
+
 }

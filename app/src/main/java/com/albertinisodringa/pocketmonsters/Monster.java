@@ -1,5 +1,10 @@
 package com.albertinisodringa.pocketmonsters;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Class that handles the Monster MapElement
  */
@@ -40,7 +45,7 @@ public class Monster implements MapElement {
 
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     @Override
@@ -86,6 +91,26 @@ public class Monster implements MapElement {
     @Override
     public void setSize(MapElementSize size) {
         this.size = size;
+    }
+
+    @Override
+    public JSONObject getJson() {
+        JSONObject json = new JSONObject();
+
+        try {
+            json = new JSONObject("{\n" +
+                    "\t\"type\": \"" + "monster" + "\",\n" +
+                    "\t\"id\": \"" + getId() + "\",\n" +
+                    "\t\"name\": \"" + getName() + "\",\n" +
+                    "\t\"lat\": \"" + getLat() + "\",\n" +
+                    "\t\"lon\": \"" + getLon() + "\",\n" +
+                    "\t\"size\": " + getSize() + "\n" +
+                    "}");
+        } catch (JSONException e) {
+            Log.d("Monster", e.getMessage());
+        }
+
+        return json;
     }
 
     @Override

@@ -7,55 +7,90 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
-    <ImageView
-        android:id="@+id/map_element_picture"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
-        android:id="@+id/fight_text"
-        android:layout_width="368dp"
-        android:layout_height="196dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="26dp"
+        android:id="@+id/map_element_name_TextView"
+        android:layout_width="295dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="60dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:gravity="center_horizontal"
-        android:text="You have chosen to fight xxx . \n \n Continue?"
+        android:gravity="center"
+        android:text="Mostro morbidoso"
         android:textColor="#000000"
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map_element_picture" />
+
+    <ImageView
+        android:id="@+id/map_element_picture"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fight_text"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/fight_text"
+        android:layout_width="388dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center_horizontal"
+        android:text="You have chosen to"
+        android:textColor="#000000"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/yes_button"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginStart="67dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="97dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
         android:clickable="true"
-        app:layout_constraintEnd_toStartOf="@+id/no_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fight_text"
+        app:layout_constraintTop_toBottomOf="@+id/action_name_TextView"
         app:srcCompat="@drawable/yes" />
 
     <ImageView
         android:id="@+id/no_button"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="67dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="64dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fight_text"
+        app:layout_constraintTop_toBottomOf="@+id/action_name_TextView"
         app:srcCompat="@drawable/no" />
+
+    <TextView
+        android:id="@+id/action_name_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="180dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:text="Fight?"
+        android:textColor="#000000"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_element_name_TextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
