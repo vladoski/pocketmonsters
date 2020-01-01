@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -42,9 +41,8 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -229,12 +227,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             getProfile(api);
         }
 
+        // Location permission handler, if the user previously granted  permission to use his position, display it on the map; if not, ask for location permission.
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
             showUserLastLocation();
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
         }
+
+        // Listenes if the FightFragment has been closed by the user, so the map can refresh
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                getMap(api, symbolManager);
+                getProfile(api);
+            }
+        });
     }
 
     public void showUserLastLocation() {
