@@ -1,7 +1,5 @@
 package com.albertinisodringa.pocketmonsters;
 
-import com.google.gson.JsonElement;
-
 import org.json.JSONObject;
 
 /**

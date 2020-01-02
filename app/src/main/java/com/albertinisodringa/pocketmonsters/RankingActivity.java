@@ -45,7 +45,7 @@ public class RankingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                Log.d("MainActivity", "Error getting ranking");
+                ApiModelErrorHandler.handle(error, getApplicationContext());
             }
         });
 

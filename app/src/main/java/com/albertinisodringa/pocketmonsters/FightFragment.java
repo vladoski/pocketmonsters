@@ -1,10 +1,8 @@
 package com.albertinisodringa.pocketmonsters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,18 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
@@ -35,7 +30,6 @@ public class FightFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fight_fragment, container, false);
-
     }
 
     @Override
@@ -54,10 +48,10 @@ public class FightFragment extends Fragment {
         final ImageView noButtonImageView = getView().findViewById(R.id.no_button);
 
         // Get data from the bundle passed from MainActivity
-        Bundle mapElementDataBundle = getArguments();
+        final Bundle mapElementDataBundle = getArguments();
 
         try {
-            JSONObject mapElementDataJson = new JSONObject(mapElementDataBundle.getString("mapElementData")); // Create JSONObject from the JSON string passed in the bundle
+            final JSONObject mapElementDataJson = new JSONObject(mapElementDataBundle.getString("mapElementData")); // Create JSONObject from the JSON string passed in the bundle
 
             // MapElementSize selector
             MapElementSize mapElementSize;
@@ -120,24 +114,7 @@ public class FightFragment extends Fragment {
 
                 @Override
                 public void onFailure(Exception error) {
-                    // TODO: refactor this code, useful only for debugging
-                    // Used for debugging the VolleyError response, to refactor
-                    if (error instanceof VolleyError) {
-                        VolleyError volleyError = (VolleyError) error;
-                        String body;
-                        final String statusCode = String.valueOf(volleyError.networkResponse.statusCode);
-                        //get response body and parse with appropriate encoding
-                        try {
-                            body = new String(volleyError.networkResponse.data, "UTF-8");
-
-
-                        } catch (Exception e) {
-                            Log.d("FightFragment", e.getMessage());
-                        }
-                    } else {
-                        // TODO: find the bug, why is this exception being thrown so many times?
-                        Log.d("ProfileEditActivityJSON", error.getMessage());
-                    }
+                    ApiModelErrorHandler.handle(error, getApplicationContext());
                 }
             });
 
@@ -148,14 +125,33 @@ public class FightFragment extends Fragment {
                     api.fightEatAsync(mapElement, new VolleyEventListener() {
                         @Override
                         public void onSuccess(Object returnFromCallback) {
-                            // TODO: add message if the player won the fight or he's been killed by the monster
+                            try {
+                                final String mapElementType = new JSONObject(mapElementDataBundle.getString("mapElementData")).getString("type"); // Useful for the FightFragment Toast message, because it has to be accessed in anonymous class being final.  TODO: should refactor
 
-                            getFragmentManager().popBackStack(); // closes the Fragment
+                                FightEatResponse fightEatResponse = (FightEatResponse) returnFromCallback;
+
+                                // String message after eating/slaying the monster
+                                String fightEatResponseToastString;
+                                if (fightEatResponse.isPlayerDead()) {
+                                    fightEatResponseToastString = "You have been slain!";
+                                } else if (!fightEatResponse.isPlayerDead() && mapElementType.equals("candy")) {
+                                    fightEatResponseToastString = "Gnam. What a delicious candy!";
+                                } else {
+                                    fightEatResponseToastString = "You have killed the monster!";
+                                }
+
+                                fightEatResponseToastString += "\nLP: " + fightEatResponse.getLifePoints() + " XP: " + fightEatResponse.getExperiencePoints();
+
+                                Toast.makeText(getApplicationContext(), fightEatResponseToastString, Toast.LENGTH_SHORT).show();
+                                getFragmentManager().popBackStack(); // closes the Fragment
+                            } catch (JSONException e) {
+                                ApiModelErrorHandler.handle(e, getApplicationContext());
+                            }
                         }
 
                         @Override
                         public void onFailure(Exception error) {
-                            Log.d("FightFragment", error.getMessage());
+                            ApiModelErrorHandler.handle(error, getApplicationContext());
                         }
                     });
                 }
@@ -170,9 +166,8 @@ public class FightFragment extends Fragment {
             });
 
         } catch (JSONException e) {
-            Log.d("FightFragment", e.getMessage());
+            ApiModelErrorHandler.handle(e, getApplicationContext());
         }
 
     }
-
 }

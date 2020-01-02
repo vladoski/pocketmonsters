@@ -17,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,8 +146,6 @@ public class ApiModel {
      * @param image    the image
      * @param callback the callback
      */
-    // TODO: check if it's better to have a Player object passed as parameter
-    // TODO: make possible to edit only name or image by making attributes nullable
     public void setProfileAsync(@Nullable String name, @Nullable byte[] image, final VolleyEventListener callback) {
         String apiUrlRequest = "/setprofile.php";
         JSONObject requestJson = new JSONObject();
@@ -383,7 +380,7 @@ public class ApiModel {
      * Returns a byte[] to the callback
      *
      * @param mapElementId the map element id
-     * @param callback   the callback
+     * @param callback     the callback
      */
     public void getMapElementImageAsync(int mapElementId, final VolleyEventListener callback) {
         final String apiUrlRequest = "/getimage.php";

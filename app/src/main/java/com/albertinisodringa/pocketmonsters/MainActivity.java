@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -55,17 +56,25 @@ import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT
 // TODO: add comments and possible refactoring
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, Style.OnStyleLoaded, PermissionsListener {
 
+    private ApiModel api;
+
     private MapView mapView;
-    private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
-    private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+    private SymbolManager symbolManager;
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
     private Style style;
+
+    private Handler mapHandler = new Handler();
+    private Runnable mapUpdater;
+
     private LocationEngine locationEngine;
     private LocationListeningCallback locationListeningCallback;
     private Location location;
 
     private final Gson gson = new Gson();
+
+    private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+    private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
         locationListeningCallback = new LocationListeningCallback(this);
+
+        // SharedPreferences used to store persistently the sessionId
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
+
+        // Game API handler
+        api = new ApiModel(getString(R.string.api_url), getApplicationContext());
+
+        // Write on sharedPreferences the new sessionId from signing up on the API, if there's no one inside sharedPreferences.
+        // If it's present just read sessionId from sharedPreferences and set it to the ApiModel
+        if (!sharedPreferences.contains("sessionId")) {
+            api.registerAsync(new VolleyEventListener() {
+                @Override
+                public void onSuccess(Object returnFromCallback) {
+                    String sessionId = getString(R.string.api_default_session_id); // Default session_id
+                    if (returnFromCallback instanceof String) {
+                        sessionId = (String) returnFromCallback;
+                    }
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("sessionId", sessionId);
+                    editor.apply();
+
+                    // Set sessionId because it's null
+                    api.setSessionId(sessionId);
+                }
+
+                @Override
+                public void onFailure(Exception error) {
+                    ApiModelErrorHandler.handle(error, getApplicationContext());
+                }
+            });
+        } else {
+            // Set sessionId from sharedPreferences because it's null
+            api.setSessionId(getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE).getString("sessionId", null));
+        }
+
     }
 
     @Override
@@ -96,18 +141,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public void onRestart() {
+        super.onRestart();
+
+        getMap(api, symbolManager);
+        getProfile(api);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         mapView.onPause();
+
+        if (mapHandler != null) {
+            mapHandler.removeCallbacks(mapUpdater);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
         if (locationEngine != null) {
             locationEngine.removeLocationUpdates(locationListeningCallback);
         }
+
         mapView.onStop();
+
+        if (mapHandler != null) {
+            mapHandler.removeCallbacks(mapUpdater);
+        }
     }
 
     @Override
@@ -120,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+
+        if (mapHandler != null) {
+            mapHandler.removeCallbacks(mapUpdater);
+        }
     }
 
     @Override
@@ -150,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapboxMap.getStyle().addImage("candy_l", BitmapFactory.decodeResource(getResources(), R.drawable.candy_l));
 
         // Handles symbols, annotations and markers for the MapBox API
-        final SymbolManager symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
         symbolManager.setIconAllowOverlap(true);
         symbolManager.setIconTranslate(new Float[]{-4f, 5f});
         symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
@@ -181,54 +248,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
 
-        // SharedPreferences per salvare in modo persistente la session_id dell'API
-        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
-
-        // Game API handler
-        final ApiModel api = new ApiModel(getString(R.string.api_url), getApplicationContext());
-
-        // Write on sharedPreferences the new sessionId from signing up on the API, if there's no one inside sharedPreferences.
-        // If it's present just read sessionId from sharedPreferences and set it to the ApiModel
-        if (!sharedPreferences.contains("sessionId")) {
-            api.registerAsync(new VolleyEventListener() {
-                @Override
-                public void onSuccess(Object returnFromCallback) {
-                    String sessionId = getString(R.string.api_default_session_id); // Default session_id
-                    if (returnFromCallback instanceof String) {
-                        sessionId = (String) returnFromCallback;
-                    }
-
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("sessionId", sessionId);
-                    editor.apply();
-
-                    // Set sessionId because it's null
-                    api.setSessionId(sessionId);
-
-                    // TODO: refactor this
-                    // Get the MapElements from the API (async)
-                    getMap(api, symbolManager);
-
-                    // Get the player profile from the API (async) and edit the textviews for lifepoints and experience points
-                    getProfile(api);
-                }
-
-                @Override
-                public void onFailure(Exception error) {
-                    Log.d("MainActivity", error.getMessage());
-                }
-            });
-        } else {
-            // Set sessionId from sharedPreferences because it's null
-            api.setSessionId(getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE).getString("sessionId", null));
-
-            // TODO: refactor this
-            // Get the MapElements from the API (async)
-            getMap(api, symbolManager);
-
-            // Get the player profile from the API (async) and edit the textviews for lifepoints and experience points
-            getProfile(api);
-        }
 
         // Location permission handler, if the user previously granted  permission to use his position, display it on the map; if not, ask for location permission.
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
@@ -245,6 +264,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 getProfile(api);
             }
         });
+
+        getMap(api, symbolManager);
+        getProfile(api);
+
+        // Refreshes map every 20 seconds in the main thread (because Mapbox doesn't allow to access the map from another thread)
+        final long MAP_REFRESH_TIME_IN_MILLISECONDS = DEFAULT_INTERVAL_IN_MILLISECONDS * 30L;
+
+        mapUpdater = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getMap(api, symbolManager);
+                    getProfile(api);
+                } catch (Exception e) {
+                    Log.d("ExceptionMainActivity", e.getMessage());
+                }
+                Log.d("MainActivity", "Refreshed map and profile");
+
+                // Using recursion to simulate infinite polling
+                mapHandler.postDelayed(this, MAP_REFRESH_TIME_IN_MILLISECONDS);
+            }
+        };
+
+        mapHandler.postDelayed(mapUpdater, MAP_REFRESH_TIME_IN_MILLISECONDS);
     }
 
     public void showUserLastLocation() {
@@ -271,7 +314,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationComponent.setLocationComponentEnabled(true);
         locationComponent.setCameraMode(CameraMode.TRACKING);
         locationComponent.setRenderMode(RenderMode.COMPASS);
-
     }
 
     public void onCenterButtonPressed(View view) {
@@ -282,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
         }
-
     }
 
     public void onProfileImageClick(View v) {
@@ -307,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (granted) {
             showUserLastLocation();
         } else {
-            Toast.makeText(this, "Permesso non dato", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Permission to use user location not granted", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -333,10 +374,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         @Override
         public void onFailure(@NonNull Exception exception) {
-
+            // TODO: handle this exception
         }
     }
-
 
     /**
      * Helper function
@@ -359,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mapElementList = (List<MapElement>) returnFromCallback; // Can't check type becuase it's a generic, TODO: should refactor
                 }
 
+                // Process all the MapElements
                 for (int i = 0; i < mapElementList.size(); i++) {
                     MapElement mapElement = mapElementList.get(i);
 
@@ -373,6 +414,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             monsterImageId += "l";
                         }
 
+                        // Create symbol per every Monster
                         symbolManager.create(new SymbolOptions()
                                 .withLatLng(new LatLng(mapElement.getLat(), mapElement.getLon()))
                                 .withIconImage(monsterImageId)
@@ -392,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             candyImageId += "l";
                         }
 
+                        // Create symbol per every Candy
                         symbolManager.create(new SymbolOptions()
                                 .withLatLng(new LatLng(mapElement.getLat(), mapElement.getLon()))
                                 .withIconImage(candyImageId)
@@ -405,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Exception error) {
-                Log.d("MainActivity", error.getMessage());
+                ApiModelErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
@@ -436,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Exception error) {
-                Log.d("ProfileActivity", error.getMessage());
+                ApiModelErrorHandler.handle(error, getApplicationContext());
             }
         });
     }

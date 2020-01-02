@@ -17,8 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -89,23 +87,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Exception error) {
-                        // TODO: refactor this code, useful only for debugging
-                        // Used for debugging the VolleyError response, to refactor
-                        if (error instanceof VolleyError) {
-                            VolleyError volleyError = (VolleyError) error;
-                            String body;
-                            final String statusCode = String.valueOf(volleyError.networkResponse.statusCode);
-                            //get response body and parse with appropriate encoding
-                            try {
-                                body = new String(volleyError.networkResponse.data, "UTF-8");
-                                Log.d("ProfileEditActivity", body);
-                            } catch (Exception e) {
-                                Log.d("ProfileEditActivity", e.getMessage());
-                            }
-                        } else {
-                            // TODO: find the bug, why is this exception being thrown so many times?
-                            Log.d("ProfileEditActivityJSON", error.getMessage());
-                        }
+                        ApiModelErrorHandler.handle(error, getApplicationContext());
                     }
                 });
             }
@@ -150,5 +132,4 @@ public class ProfileEditActivity extends AppCompatActivity {
             Log.d("ProfileEditActivity", "resultCode NOT RESULT_OK");
         }
     }
-
 }

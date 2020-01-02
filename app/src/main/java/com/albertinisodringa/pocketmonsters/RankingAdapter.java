@@ -1,6 +1,5 @@
 package com.albertinisodringa.pocketmonsters;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHolder> {
@@ -36,14 +34,14 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         }
 
         public void setPlayerRanking(Player playerRanking, int position) {
-            this.playerProfilePicture.setImageBitmap(BitmapFactory.decodeByteArray(playerRanking.getImage() , 0, playerRanking.getImage().length));
-            if(playerRanking.getUsername() == null){
+            this.playerProfilePicture.setImageBitmap(BitmapFactory.decodeByteArray(playerRanking.getImage(), 0, playerRanking.getImage().length));
+            if (playerRanking.getUsername() == null) {
                 this.playerNameRanking.setText("No name");
             } else {
                 this.playerNameRanking.setText(playerRanking.getUsername());
             }
-            this.experiencePointRanking.setText(playerRanking.getExperiencePoints()+"");
-            this.rankingPosition.setText((position+1)+"");
+            this.experiencePointRanking.setText(playerRanking.getExperiencePoints() + "");
+            this.rankingPosition.setText((position + 1) + "");
         }
     }
 

@@ -76,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                Log.d("ProfileActivity", error.getMessage());
+                ApiModelErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
