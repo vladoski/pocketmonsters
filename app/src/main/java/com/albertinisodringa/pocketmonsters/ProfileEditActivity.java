@@ -23,6 +23,9 @@ import java.io.InputStream;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
+    public static final String PROFILE_EDITED_SUCCESFULLY_MESSAGE = "The profile has been edited successfully";
+    public static final String IMAGE_LESS_THAN_100KB_MESSAGE = "Image has to be less thank 100KB";
+
     private Bitmap profileImage = null;
     private boolean isProfileImageSet = false;
     ImageView profileImageSetImageView = null;
@@ -81,7 +84,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     public void onSuccess(Object returnFromCallback) {
                         // Go to the ProfileActivity and send an OK message
                         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        intent.putExtra("Message", "The profile has been edited successfully"); // TODO: find a better name rather thank "Message"
+                        intent.putExtra("Message", PROFILE_EDITED_SUCCESFULLY_MESSAGE);
                         startActivity(intent);
                     }
 
@@ -120,11 +123,11 @@ public class ProfileEditActivity extends AppCompatActivity {
                     profileImageSetImageView.setVisibility(View.INVISIBLE);
                     uploadedImageView.setVisibility(View.INVISIBLE);
 
-                    // TODO: find better text for the Toast message
-                    Toast toast = Toast.makeText(getApplicationContext(), "Image has to be less thank 100KB", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), IMAGE_LESS_THAN_100KB_MESSAGE, Toast.LENGTH_SHORT);
                     toast.show();
                 }
             } catch (FileNotFoundException e) {
+                // TODO: handle this exception in a better way
                 Log.d("ProfileEditActivity", e.getMessage());
             }
 

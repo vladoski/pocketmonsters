@@ -75,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+    private static final int ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS = 50;
+
+    private static final String MAPELEMENT_OUT_OF_PLAYER_RANGE_ERROR = "Oops, this is out of your range!";
+    private static final String NO_LOCATION_ENABLED_ERROR = "Please, enable your location to play!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,19 +229,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         symbolManager.addClickListener(new OnSymbolClickListener() {
             @Override
             public void onAnnotationClick(Symbol symbol) {
-                FightFragment fightFragment = new FightFragment();
+                if (mapboxMap.getLocationComponent().getLastKnownLocation() != null) {
 
-                Bundle args = new Bundle();
+                    LatLng userPositionLatLng = new LatLng(
+                            mapboxMap.getLocationComponent().getLastKnownLocation().getLatitude(),
+                            mapboxMap.getLocationComponent().getLastKnownLocation().getLongitude()
+                    );
 
-                // Pass the MapElement data (annotation) to the fragment
-                args.putString("mapElementData", symbol.getData().getAsJsonObject().toString());
-                fightFragment.setArguments(args);
+                    // Check if the MapElement is in the 50m radius to be fought/eaten
+                    if (symbol.getLatLng().distanceTo(userPositionLatLng) < ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS) {
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        FightFragment fightFragment = new FightFragment();
 
-                transaction.replace(R.id.fragment_container, fightFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                        Bundle args = new Bundle();
+
+                        // Pass the MapElement data (annotation) to the fragment
+                        args.putString("mapElementData", symbol.getData().getAsJsonObject().toString());
+                        fightFragment.setArguments(args);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                        transaction.replace(R.id.fragment_container, fightFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    } else {
+                        Toast.makeText(getApplicationContext(), MAPELEMENT_OUT_OF_PLAYER_RANGE_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), NO_LOCATION_ENABLED_ERROR, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

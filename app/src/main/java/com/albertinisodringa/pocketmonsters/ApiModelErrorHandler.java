@@ -10,7 +10,7 @@ import org.json.JSONException;
 
 public class ApiModelErrorHandler {
     private static final String NO_CONNECTION_TO_SERVER = "Unable to reach the server.\nCheck your internet settings.";
-    private static final String WRONG_RESPONSE_FROM_SERVER = "Something wrong happened with the server, please retry."; // TODO: find a better error message
+    private static final String WRONG_RESPONSE_FROM_SERVER = "Something wrong happened with the server, please retry.";
     private static final String GENERIC_ERROR = "Oopsie, something bad happened!";
 
 

@@ -1,6 +1,7 @@
 package com.albertinisodringa.pocketmonsters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
@@ -78,8 +79,12 @@ public class Player {
      * @param image the image
      * @return the image
      */
-    public Player setImage(byte[] image) { // TODO: check if image is valid or not
-        this.image = image;
+    public Player setImage(byte[] image) throws Exception {
+        if (BitmapFactory.decodeByteArray(image, 0, image.length) != null) {
+            this.image = image;
+        } else {
+            throw new Exception("Image is not valid");
+        }
         return this;
     }
 
@@ -145,32 +150,6 @@ public class Player {
         this.experiencePoints += experiencePoints;
 
         return this;
-    }
-
-    /**
-     * Makes a request to the API for fighting a monster passed as parameter.
-     * Returns a FightEatResponse to the callback
-     *
-     * @param monster  the monster
-     * @param context  the context
-     * @param callback the callback
-     */
-    public void fightAsync(Monster monster, Context context, VolleyEventListener callback) {
-        ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", "https://ewserver.di.unimi.it/mobicomp/mostri", context); //TODO: API parameters not hardwritten
-        api.fightEatAsync(monster, callback);
-    }
-
-    /**
-     * Makes a request to the API for eating a candy passed as parameter.
-     * Returns a FightEatResponse to the callback
-     *
-     * @param candy    the candy
-     * @param context  the context
-     * @param callback the callback
-     */
-    public void eatAsync(Candy candy, Context context, VolleyEventListener callback) {
-        ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", "https://ewserver.di.unimi.it/mobicomp/mostri", context); //TODO: API parameters not hardwritten
-        api.fightEatAsync(candy, callback);
     }
 
     @Override
