@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RankingActivity extends AppCompatActivity {
+
     private RecyclerView recyclerRankingView;
     private RecyclerView.Adapter rankingAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -25,12 +26,14 @@ public class RankingActivity extends AppCompatActivity {
         recyclerRankingView = findViewById(R.id.recycler_ranking);
         recyclerRankingView.setHasFixedSize(true);
 
+        // Use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerRankingView.setLayoutManager(layoutManager);
 
-        //prendo la lista
+        // Game API handler
         ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", getString(R.string.api_url), getApplicationContext());
 
+        // Call to the API to get players in the ranking
         api.getRankingAsync(new VolleyEventListener() {
 
             @Override
@@ -38,6 +41,8 @@ public class RankingActivity extends AppCompatActivity {
                 List<Player> playerList = new ArrayList<>();
                 if (returnFromCallback instanceof List<?>) {
                     playerList = (List<Player>) returnFromCallback; // Can't check type becuase it's a generic
+
+                    // Create an instance of RankingAdapter to create the recycler view with players data
                     rankingAdapter = new RankingAdapter(playerList);
                     recyclerRankingView.setAdapter(rankingAdapter);
                 }
@@ -52,7 +57,8 @@ public class RankingActivity extends AppCompatActivity {
     }
 
     public void onBackClick(View v) {
-        Log.d("RankingActivity", "Back tap to main activity");
+        // Go back to MainActivity (map)
+        Log.d("RankingActivity", "Back tap to MainActivity");
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }

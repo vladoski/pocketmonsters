@@ -84,15 +84,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //map
+        // Create the map
         Mapbox.getInstance(this, getString(R.string.mapboxapi_access_token));
         setContentView(R.layout.main_activity_map);
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        // With the PermissionsManager class you can check if the user has granted location permission
         permissionsManager = new PermissionsManager(this);
 
+        // The LocationEngine class helps you get location information
+        // This will obtain the best location engine that is available
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+
+        // Class implemented beneath, serves as callback
         locationListeningCallback = new LocationListeningCallback(this);
 
         // SharedPreferences used to store persistently the sessionId
@@ -157,6 +163,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onPause();
         mapView.onPause();
 
+        if (locationEngine != null) {
+            locationEngine.removeLocationUpdates(locationListeningCallback);
+        }
+
         if (mapHandler != null) {
             mapHandler.removeCallbacks(mapUpdater);
         }
@@ -166,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStop() {
         super.onStop();
 
+        // Stop requesting location to prevent from having a memory leak
         if (locationEngine != null) {
             locationEngine.removeLocationUpdates(locationListeningCallback);
         }
@@ -188,6 +199,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onDestroy();
         mapView.onDestroy();
 
+        if (locationEngine != null) {
+            locationEngine.removeLocationUpdates(locationListeningCallback);
+        }
+
         if (mapHandler != null) {
             mapHandler.removeCallbacks(mapUpdater);
         }
@@ -208,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStyleLoaded(@NonNull Style style) {
         this.style = style;
+
+        // UiSetting to show compass img and delete Mapbox logo from the map
         mapboxMap.getUiSettings().setAttributionEnabled(false);
         mapboxMap.getUiSettings().setLogoEnabled(false);
         mapboxMap.getUiSettings().setCompassFadeFacingNorth(false);
@@ -226,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         symbolManager.setIconTranslate(new Float[]{-4f, 5f});
         symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
 
+        // Handles click on symbols on the map (monsters and candy)
         symbolManager.addClickListener(new OnSymbolClickListener() {
             @Override
             public void onAnnotationClick(Symbol symbol) {
@@ -310,7 +328,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapHandler.postDelayed(mapUpdater, MAP_REFRESH_TIME_IN_MILLISECONDS);
     }
 
+
     public void showUserLastLocation() {
+        // Request location updates once you know location permissions have been granted
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setPriority(LocationEngineRequest.PRIORITY_NO_POWER)
                 .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME)
@@ -319,24 +339,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationEngine.requestLocationUpdates(request, locationListeningCallback, getMainLooper());
         locationEngine.getLastLocation(locationListeningCallback);
 
+        // Create a LocationComponentOptions to costumize LocationComponent
         LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
                 .elevation(5)
                 .accuracyAlpha(.4f)
                 .accuracyColor(Color.rgb(113, 197, 247))
                 .build();
 
+        // Get an instance of the component
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
+        // Set activation options
         LocationComponentActivationOptions locationComponentActivationOptions = LocationComponentActivationOptions.builder(this, style)
+                // Use the LocationComponentOption object as a parameter here
                 .locationComponentOptions(customLocationComponentOptions)
                 .build();
 
+        // Activate with a built LocationComponentActivationOptions object
         locationComponent.activateLocationComponent(locationComponentActivationOptions);
+
+        // Enable to make component visible
         locationComponent.setLocationComponentEnabled(true);
+
         locationComponent.setCameraMode(CameraMode.TRACKING);
         locationComponent.setRenderMode(RenderMode.COMPASS);
     }
 
     public void onCenterButtonPressed(View view) {
+        // Center on device's location, if it's known
         if (location != null) {
             CameraPosition position = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))
@@ -344,15 +374,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .build();
             mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
         }
+
+        //TODO: else, what if the device's location is not known
     }
 
     public void onProfileImageClick(View v) {
+        // Go to ProfileActivity
         Log.d("MainActivity", "profile tap");
         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(intent);
     }
 
     public void onRankingClick(View v) {
+        // Go to RankingActivity
         Log.d("MainActivity", "ranking tap");
         Intent intent = new Intent(getApplicationContext(), RankingActivity.class);
         startActivity(intent);
@@ -360,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onExplanationNeeded(List<String> permissionsToExplain) {
-
+        //TODO: what if the user doesn't allow location request
     }
 
     @Override
@@ -377,6 +411,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+
+    /* This class will serve as a "callback" and it's needed because a LocationEngine memory leak
+        is possible if the activity/fragment directly implements the LocationEngineCallback<LocationEngineResult>.
+        The WeakReference setup avoids the leak. The class requires Android system Activity as a constructor parameter. */
+
     private static class LocationListeningCallback implements LocationEngineCallback<LocationEngineResult> {
 
         private final WeakReference<MainActivity> activityWeakReference;
@@ -389,11 +428,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         @Override
         public void onSuccess(LocationEngineResult result) {
+            // The LocationEngineCallback interface's method which fires when the device's location has changed.
             mainActivity.location = result.getLastLocation();
         }
 
         @Override
         public void onFailure(@NonNull Exception exception) {
+            // The LocationEngineCallback interface's method which fires when the device's location can not be captured
             // TODO: handle this exception
         }
     }
