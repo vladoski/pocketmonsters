@@ -3,6 +3,7 @@ package com.albertinisodringa.pocketmonsters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -536,6 +538,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Set experience points on TextView
                 TextView experiencePointsTextView = findViewById(R.id.player_experience_point);
                 experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
+
+                // Set profile image on ImageView
+                ImageView profileImageView = findViewById(R.id.player_profile_picture);
+                Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(player.getImage(), 0, player.getImage().length);
+
+                // If the profileImage is not a valid Bitmap, then display default profile image
+                if (profileImageBitmap == null) {
+                    profileImageView.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.profile_default));
+                } else {
+                    // Display original image from the API
+                    profileImageView.setImageBitmap(profileImageBitmap);
+                }
             }
 
             @Override

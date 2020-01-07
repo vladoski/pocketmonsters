@@ -34,7 +34,7 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
             android:text="Ranking"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textColor="@color/common_google_signin_btn_text_dark_pressed"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

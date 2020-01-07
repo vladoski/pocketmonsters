@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:text="200 LP"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                 android:textColorHint="#00A52424"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -76,7 +76,7 @@
                 android:gravity="center"
                 android:text="150 XP"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                 android:textColorHint="#00A52424"
                 android:textSize="12sp"
                 android:textStyle="bold" />
