@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
 
     @Override
@@ -42,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
                 nameTextView.setText(player.getUsername() == null ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
 
                 // Set profile image on ImageView
-                ImageView profileImageView = findViewById(R.id.profile_image);
+                CircleImageView profileImageView = findViewById(R.id.uploadedImageView);
                 Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(player.getImage(), 0, player.getImage().length);
 
                 // If the profileImage is not a valid Bitmap, then display default profile image

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/ranking_bar_prova2"
@@ -14,17 +13,18 @@
         android:layout_weight="1"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
-        android:text="1"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="50dp" />
 
-    <ImageView
-        android:id="@+id/player_profile_picture"
-        android:layout_width="40dp"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/player_picture_ranking"
+        android:layout_width="50dp"
+        android:src="@drawable/profile_default"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:civ_border_color="@color/common_google_signin_btn_text_dark_focused"
+        app:civ_border_width="2dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="100dp"
@@ -40,9 +40,8 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center_vertical"
             android:text="Rita"
+            android:paddingLeft="10dp"
             android:textAllCaps="false"
-
-
             android:textColor="@color/common_google_signin_btn_text_dark_pressed"
             android:textSize="30dp"
             android:textStyle="bold" />
@@ -55,6 +54,7 @@
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center_vertical"
             android:text="150 XP"
+            android:paddingLeft="10dp"
             android:textColor="@color/common_google_signin_btn_text_dark_pressed"
             android:textSize="20dp" />
     </LinearLayout>

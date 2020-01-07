@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHolder> {
 
     private List<Player> playerList;
@@ -24,14 +26,14 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView playerProfilePicture;
+        private CircleImageView playerProfilePicture;
         private TextView playerNameRanking;
         private TextView experiencePointRanking;
         private TextView rankingPosition;
 
         public ViewHolder(View view) {
             super(view);
-            this.playerProfilePicture = view.findViewById(R.id.player_profile_picture);
+            this.playerProfilePicture = view.findViewById(R.id.player_picture_ranking);
             this.playerNameRanking = view.findViewById(R.id.player_name_ranking);
             this.experiencePointRanking = view.findViewById(R.id.experience_point_ranking);
             this.rankingPosition = view.findViewById(R.id.ranking_position);

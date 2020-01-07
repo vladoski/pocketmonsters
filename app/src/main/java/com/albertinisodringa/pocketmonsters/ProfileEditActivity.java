@@ -21,6 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileEditActivity extends AppCompatActivity {
 
     public static final String PROFILE_EDITED_SUCCESFULLY_MESSAGE = "The profile has been edited successfully";
@@ -29,7 +31,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private Bitmap profileImage = null;
     private boolean isProfileImageSet = false;
     ImageView profileImageSetImageView = null;
-    ImageView uploadedImageView = null;
+    CircleImageView uploadedImageView = null;
     final private int REQUEST_CODE = 1; // Code useful for the result of the startActivity
 
     @Override

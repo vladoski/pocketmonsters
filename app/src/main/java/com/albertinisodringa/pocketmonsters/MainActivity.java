@@ -52,6 +52,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT_VIEWPORT;
 
 
@@ -540,7 +542,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
 
                 // Set profile image on ImageView
-                ImageView profileImageView = findViewById(R.id.player_profile_picture);
+                CircleImageView profileImageView = findViewById(R.id.player_picture_ranking);
                 Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(player.getImage(), 0, player.getImage().length);
 
                 // If the profileImage is not a valid Bitmap, then display default profile image
