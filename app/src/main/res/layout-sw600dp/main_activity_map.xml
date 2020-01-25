@@ -47,12 +47,11 @@
             android:layout_width="113dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/profile_default"
             app:civ_border_color="@color/common_google_signin_btn_text_dark_focused"
             app:civ_border_width="2dp" />
 
         <LinearLayout
-            android:layout_width="209dp"
+            android:layout_width="196dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
@@ -60,12 +59,11 @@
 
             <TextView
                 android:id="@+id/player_life_point"
-                android:layout_width="match_parent"
+                android:layout_width="166dp"
                 android:layout_height="40dp"
                 android:background="@drawable/lp_bar"
                 android:gravity="center"
                 android:src="@drawable/profile_default"
-                android:text="200 LP"
                 android:textAlignment="center"
                 android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                 android:textColorHint="#00A52424"
@@ -74,12 +72,11 @@
 
             <TextView
                 android:id="@+id/player_experience_point"
-                android:layout_width="match_parent"
+                android:layout_width="166dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/xp_bar"
                 android:gravity="center"
-                android:text="150 XP"
                 android:textAlignment="center"
                 android:textColor="@color/common_google_signin_btn_text_dark_pressed"
                 android:textColorHint="#00A52424"

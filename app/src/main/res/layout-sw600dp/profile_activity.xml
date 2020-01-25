@@ -7,6 +7,21 @@
     android:background="@drawable/background"
     tools:context=".ProfileActivity">
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="55dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="3dp"
+        android:clickable="true"
+        android:onClick="onBackClick"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.142"
+        app:srcCompat="@drawable/left_arrow" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/uploadedImageView"

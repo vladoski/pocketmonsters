@@ -35,9 +35,7 @@
             android:id="@+id/textView"
             android:layout_width="407dp"
             android:layout_height="74dp"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="65dp"
+            android:layout_marginTop="96dp"
             android:fontFamily="sans-serif-smallcaps"
             android:gravity="center"
             android:text="Ranking"
@@ -45,14 +43,24 @@
             android:textSize="50sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.415"
+            app:layout_constraintHorizontal_bias="0.34"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="145dp"
+            android:layout_height="108dp"
+            android:layout_marginTop="79dp"
+            android:layout_marginEnd="197dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cup" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_ranking"
-        android:layout_width="537dp"
+        android:layout_width="516dp"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:padding="5dp"

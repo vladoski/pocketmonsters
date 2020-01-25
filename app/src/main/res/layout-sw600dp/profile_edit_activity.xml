@@ -12,7 +12,6 @@
         android:layout_width="211dp"
         android:layout_height="190dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/profile_default"
         app:civ_border_color="@color/common_google_signin_btn_text_dark_focused"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,17 +93,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/uploadedImageView"
         app:srcCompat="@drawable/yes" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="88dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.711"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cup" />
 
     <ImageView
         android:id="@+id/imageView5"

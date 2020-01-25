@@ -21,7 +21,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/player_picture_ranking"
         android:layout_width="29dp"
-        android:layout_height="82dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_weight="1"
         app:civ_border_color="@color/common_google_signin_btn_text_dark_focused"
