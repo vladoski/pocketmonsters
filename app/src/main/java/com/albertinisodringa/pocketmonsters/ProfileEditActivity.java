@@ -1,7 +1,6 @@
 package com.albertinisodringa.pocketmonsters;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.BitmapCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,11 +24,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
-    public static final String PROFILE_EDITED_SUCCESFULLY_MESSAGE = "The profile has been edited successfully";
-    public static final String IMAGE_LESS_THAN_100KB_MESSAGE = "Image has to be less thank 100KB";
+    private static final String PROFILE_EDITED_SUCCESSFULLY_MESSAGE = "The profile has been edited successfully";
+    private static final int IMAGE_MAX_BYTE_SIZE = 100000;
+    private static final String IMAGE_MAX_BYTE_SIZE_MESSAGE = "Image has to be less than 100KB";
+    private static final String NAME_LENGTH_LESS_THAN_CHARACTERS_MESSAGE = "Name has to be less than 16 characters";
+    private static final int NAME_LENGTH_LESS_THAN_CHARACTERS = 16;
 
     private Bitmap profileImage = null;
     private boolean isProfileImageSet = false;
+    private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     ImageView profileImageSetImageView = null;
     CircleImageView uploadedImageView = null;
     final private int REQUEST_CODE = 1; // Code useful for the result of the startActivity
@@ -71,31 +74,35 @@ public class ProfileEditActivity extends AppCompatActivity {
                 // Get API model
                 ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
-
-                // Convert Bitmap to byte array if image is not null
+                // Convert Bitmap array stream to byte array if image is not null
                 byte[] profileImageByteArray = null;
                 if (isProfileImageSet && profileImage != null) {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    profileImage.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
                     profileImageByteArray = byteArrayOutputStream.toByteArray();
                 }
 
-                // Set name and/or image profile by making a call to the API
-                api.setProfileAsync(editText.getText().toString(), profileImageByteArray, new VolleyEventListener() {
-                    @Override
-                    public void onSuccess(Object returnFromCallback) {
-                        // Go to the ProfileActivity and send an OK message
-                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        intent.putExtra("Message", PROFILE_EDITED_SUCCESFULLY_MESSAGE);
-                        startActivity(intent);
-                        finish();
-                    }
+                String editName = editText.getText().toString();
 
-                    @Override
-                    public void onFailure(Exception error) {
-                        ApiModelErrorHandler.handle(error, getApplicationContext());
-                    }
-                });
+                if (editName.length() < NAME_LENGTH_LESS_THAN_CHARACTERS) {
+                    // Set name and/or image profile by making a call to the API
+                    api.setProfileAsync(editName, profileImageByteArray, new VolleyEventListener() {
+                        @Override
+                        public void onSuccess(Object returnFromCallback) {
+                            // Go to the ProfileActivity and send an OK message
+                            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                            intent.putExtra("Message", PROFILE_EDITED_SUCCESSFULLY_MESSAGE);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(Exception error) {
+                            ApiModelErrorHandler.handle(error, getApplicationContext());
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), NAME_LENGTH_LESS_THAN_CHARACTERS_MESSAGE, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -111,12 +118,13 @@ public class ProfileEditActivity extends AppCompatActivity {
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 profileImage = BitmapFactory.decodeStream(imageStream);
 
-                // If the profile image size is greater than 100KB, launch an error
-                int profileImageSize = BitmapCompat.getAllocationByteCount(profileImage);
-                if (profileImageSize < 100000) {
+                // Compress image in a byte array output stream
+                profileImage.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+
+                // If the compressed profile image size is greater than the max byte size, launch an error
+                if (byteArrayOutputStream.size() < IMAGE_MAX_BYTE_SIZE) {
                     isProfileImageSet = true;
                     profileImageSetImageView.setVisibility(View.VISIBLE); // Set visibility to the tick
-
 
                     uploadedImageView.setImageBitmap(profileImage);
                     uploadedImageView.setVisibility(View.VISIBLE);
@@ -126,7 +134,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     profileImageSetImageView.setVisibility(View.INVISIBLE);
                     uploadedImageView.setVisibility(View.INVISIBLE);
 
-                    Toast toast = Toast.makeText(getApplicationContext(), IMAGE_LESS_THAN_100KB_MESSAGE, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), IMAGE_MAX_BYTE_SIZE_MESSAGE, Toast.LENGTH_SHORT);
                     toast.show();
                 }
             } catch (FileNotFoundException e) {
@@ -138,4 +146,11 @@ public class ProfileEditActivity extends AppCompatActivity {
             Log.d("ProfileEditActivity", "resultCode NOT RESULT_OK");
         }
     }
+
+    // Goes back to ProfileActivity if back button is clicked
+    public void onBackClick(View v) {
+        Log.d("ProfileActivity", "Back tap to MainActivity");
+        super.onBackPressed();
+    }
+
 }

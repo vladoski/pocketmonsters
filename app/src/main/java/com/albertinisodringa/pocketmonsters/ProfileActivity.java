@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,8 +26,6 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
         ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
-
-        Log.d("VLADO", sharedPreferences.getString("sessionId", null));
 
         // API request for the player profile
         api.getProfileAsync(new VolleyEventListener() {
@@ -72,9 +71,15 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), ProfileEditActivity.class);
                         intent.putExtra("profileUsername", playerUsername);
                         startActivity(intent);
-                        finish();
                     }
                 });
+
+                // Display toast message from ProfileEditActivity if the profile edit is successful
+                String toastMessage = getIntent().getStringExtra("Message");
+
+                if (toastMessage != null) {
+                    Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -84,11 +89,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    // Go back to MainActivity (map)
     public void onBackClick(View v) {
-        // Go back to MainActivity (map)
         Log.d("ProfileActivity", "Back tap to MainActivity");
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        finish();
+        super.onBackPressed();
     }
 }
