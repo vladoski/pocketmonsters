@@ -13,10 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".ProfileEditActivity"></activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".RankingActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ProfileEditActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".RankingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

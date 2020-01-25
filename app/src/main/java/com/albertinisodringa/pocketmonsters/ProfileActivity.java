@@ -41,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 // Set name on TextView
                 TextView nameTextView = findViewById(R.id.name);
-                nameTextView.setText(player.getUsername() == null ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
+                nameTextView.setText(player.getUsername() == "null" ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
 
                 // Set profile image on ImageView
                 CircleImageView profileImageView = findViewById(R.id.uploadedImageView);
@@ -72,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), ProfileEditActivity.class);
                         intent.putExtra("profileUsername", playerUsername);
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -81,5 +82,13 @@ public class ProfileActivity extends AppCompatActivity {
                 ApiModelErrorHandler.handle(error, getApplicationContext());
             }
         });
+    }
+
+    public void onBackClick(View v) {
+        // Go back to MainActivity (map)
+        Log.d("ProfileActivity", "Back tap to MainActivity");
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

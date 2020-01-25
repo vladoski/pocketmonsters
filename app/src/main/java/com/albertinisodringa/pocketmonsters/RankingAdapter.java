@@ -1,10 +1,13 @@
 package com.albertinisodringa.pocketmonsters;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +33,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         private TextView playerNameRanking;
         private TextView experiencePointRanking;
         private TextView rankingPosition;
+        private Resources res;
 
         public ViewHolder(View view) {
             super(view);
@@ -40,9 +44,22 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         }
 
         public void setPlayerRanking(Player playerRanking, int position) {
-            // Set players data
-            this.playerProfilePicture.setImageBitmap(BitmapFactory.decodeByteArray(playerRanking.getImage(), 0, playerRanking.getImage().length));
-            if (playerRanking.getUsername() == null) {
+
+            // Set profile image on ImageView
+            Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(playerRanking.getImage(), 0, playerRanking.getImage().length);
+
+            // If the profileImage is not a valid Bitmap, then display default profile image
+            if (profileImageBitmap == null) {
+                playerProfilePicture.setImageResource(R.drawable.profile_default);
+            } else {
+                // Display original image from the API
+                playerProfilePicture.setImageBitmap(profileImageBitmap);
+            }
+
+            Log.d("Ranking", position +"  "+playerRanking.getImage().toString());
+
+
+            if (playerRanking.getUsername() == "null" || playerRanking.getUsername() == null) {
                 this.playerNameRanking.setText("No name");
             } else {
                 this.playerNameRanking.setText(playerRanking.getUsername());

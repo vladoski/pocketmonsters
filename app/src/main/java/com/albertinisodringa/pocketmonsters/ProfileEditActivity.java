@@ -88,6 +88,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         intent.putExtra("Message", PROFILE_EDITED_SUCCESFULLY_MESSAGE);
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override
