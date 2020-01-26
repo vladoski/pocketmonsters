@@ -42,8 +42,14 @@ public class ProfileEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_edit_activity);
 
+        final String playerUsername = getIntent().getStringExtra("profileUsername");
+
         final EditText editText = findViewById(R.id.nameEditText);
-        editText.setText(getIntent().getStringExtra("profileUsername")); // Set username from ProfileActivity that requested the profile from API
+        if(playerUsername.equals("null")){
+            editText.setText("No name");
+        } else {
+            editText.setText(playerUsername); // Set username from ProfileActivity that requested the profile from API
+        }
 
         profileImageSetImageView = findViewById(R.id.profileImageSetImageView);
         profileImageSetImageView.setVisibility(View.INVISIBLE);
@@ -51,7 +57,6 @@ public class ProfileEditActivity extends AppCompatActivity {
         uploadedImageView = findViewById(R.id.uploadedImageView);
         uploadedImageView.setVisibility(View.INVISIBLE);
 
-        // TODO: change button with an ImageView
         Button button = findViewById(R.id.uploadNewPictureButton);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +69,6 @@ public class ProfileEditActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: change button with an ImageView
         findViewById(R.id.editProfileButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
