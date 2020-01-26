@@ -40,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 // Set name on TextView
                 TextView nameTextView = findViewById(R.id.name);
-                nameTextView.setText(player.getUsername() == "null" ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
+                nameTextView.setText(player.getUsername().equals("null") ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
 
                 // Set profile image on ImageView
                 CircleImageView profileImageView = findViewById(R.id.uploadedImageView);

@@ -58,7 +58,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
             Log.d("Ranking", position +"  "+playerRanking.getImage().toString());
 
 
-            if (playerRanking.getUsername() == "null" || playerRanking.getUsername() == null) {
+            if (playerRanking.getUsername().equals("null") || playerRanking.getUsername() == null) {
                 this.playerNameRanking.setText("No name");
             } else {
                 this.playerNameRanking.setText(playerRanking.getUsername());

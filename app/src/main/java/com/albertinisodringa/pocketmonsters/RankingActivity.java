@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 public class RankingActivity extends AppCompatActivity {
 
@@ -28,8 +32,10 @@ public class RankingActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerRankingView.setLayoutManager(layoutManager);
 
+        final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
+
         // Game API handler
-        ApiModel api = new ApiModel("v6LxCAWaIJGHoLxK", getString(R.string.api_url), getApplicationContext());
+        ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
         // Call to the API to get players in the ranking
         api.getRankingAsync(new VolleyEventListener() {
