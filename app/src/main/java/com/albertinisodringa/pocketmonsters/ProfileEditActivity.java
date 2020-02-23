@@ -76,7 +76,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
                 // Get API model
-                ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
+                ApiHandler api = new ApiHandler(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
                 // Convert Bitmap array stream to byte array if image is not null
                 byte[] profileImageByteArray = null;

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
-        ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
+        ApiHandler api = new ApiHandler(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
         // API request for the player profile
         api.getProfileAsync(new VolleyEventListener() {
@@ -80,6 +81,16 @@ public class ProfileActivity extends AppCompatActivity {
                 if (toastMessage != null) {
                     Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 }
+
+                ImageView historyImageView = findViewById(R.id.history_image_view);
+
+                historyImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override

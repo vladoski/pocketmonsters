@@ -24,7 +24,7 @@ import java.util.List;
  * Model that handles the connection with the API of the game.
  * Handles automatically asynchronous request using Volley.
  */
-public class ApiModel {
+public class ApiHandler {
     private String sessionId;
     private String apiUrl;
     static private RequestQueue requestQueue;
@@ -36,10 +36,10 @@ public class ApiModel {
      * @param apiUrl  the api url
      * @param context the context
      */
-    public ApiModel(String apiUrl, Context context) {
+    public ApiHandler(String apiUrl, Context context) {
         this.sessionId = null;
         this.apiUrl = apiUrl;
-        ApiModel.requestQueue = Volley.newRequestQueue(context);
+        ApiHandler.requestQueue = Volley.newRequestQueue(context);
     }
 
     /**
@@ -49,10 +49,10 @@ public class ApiModel {
      * @param apiUrl    the api url
      * @param context   the context
      */
-    public ApiModel(String sessionId, String apiUrl, Context context) {
+    public ApiHandler(String sessionId, String apiUrl, Context context) {
         this.sessionId = sessionId;
         this.apiUrl = apiUrl;
-        ApiModel.requestQueue = Volley.newRequestQueue(context);
+        ApiHandler.requestQueue = Volley.newRequestQueue(context);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ApiModel {
 
         try {
             requestJson = new JSONObject("{ \"session_id\": \"" + getSessionId() + "\"} ");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -111,7 +111,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 Player player = new Player();
                 try {
@@ -135,7 +135,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -166,7 +166,7 @@ public class ApiModel {
 
             requestJson = new JSONObject(requestJsonString);
 
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -174,7 +174,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 Player player = new Player();
                 try {
@@ -198,7 +198,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -213,7 +213,7 @@ public class ApiModel {
 
         try {
             requestJson = new JSONObject("{ \"session_id\": \"" + getSessionId() + "\"} ");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -221,7 +221,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 List<MapElement> mapElementList = new ArrayList<>();
                 try {
@@ -271,7 +271,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -286,7 +286,7 @@ public class ApiModel {
 
         try {
             requestJson = new JSONObject("{ \"session_id\": \"" + getSessionId() + "\"} ");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -294,7 +294,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 List<Player> playerList = new ArrayList<>();
                 try {
@@ -325,7 +325,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -344,7 +344,7 @@ public class ApiModel {
                     "\t\"session_id\": \"" + getSessionId() + "\",\n" +
                     "\t\"target_id\": " + mapElement.getId() + "\n" +
                     "}");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -352,7 +352,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 String imageBase64 = "";
 
@@ -372,7 +372,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -391,7 +391,7 @@ public class ApiModel {
                     "\t\"session_id\": \"" + getSessionId() + "\",\n" +
                     "\t\"target_id\": " + mapElementId + "\n" +
                     "}");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -399,7 +399,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 String imageBase64 = "";
 
@@ -419,7 +419,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -434,7 +434,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 String sessionId = "";
 
@@ -454,7 +454,7 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
     }
 
     /**
@@ -466,7 +466,7 @@ public class ApiModel {
      * @param callback   the callback
      */
     public void fightEatAsync(MapElement mapElement, final VolleyEventListener callback) {
-        final String apiUrlRequest = "/fighteat.php";
+        final String apiUrlRequest = "/fighteat2.php";
         JSONObject requestJson = new JSONObject();
 
         try {
@@ -474,7 +474,7 @@ public class ApiModel {
                     "\t\"session_id\": \"" + getSessionId() + "\",\n" +
                     "\t\"target_id\": \"" + mapElement.getId() + "\"\n" +
                     "}");
-            Log.d("ApiModel", requestJson.toString());
+            Log.d("ApiHandler", requestJson.toString());
         } catch (JSONException e) {
             callback.onFailure(e);
         }
@@ -482,7 +482,7 @@ public class ApiModel {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("ApiModel", response.toString());
+                Log.d("ApiHandler", response.toString());
 
                 String sessionId = "";
 
@@ -520,6 +520,52 @@ public class ApiModel {
             }
         });
 
-        ApiModel.requestQueue.add(request);
+        ApiHandler.requestQueue.add(request);
+    }
+
+    public void getHistoryAsync(final VolleyEventListener callback) {
+        final String apiUrlRequest = "/gethistory.php";
+        JSONObject requestJson = new JSONObject();
+
+        try {
+            requestJson = new JSONObject("{ \"session_id\": \"" + getSessionId() + "\"} ");
+            Log.d("ApiHandler", requestJson.toString());
+        } catch (JSONException e) {
+            callback.onFailure(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, getApiUrl() + apiUrlRequest, requestJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("ApiHandler", response.toString());
+
+                List<History> historyList = new ArrayList<>();
+                try {
+                    JSONArray historyJsonArray = response.getJSONArray("history");
+
+                    for (int i = 0; i < historyJsonArray.length(); i++) {
+                        JSONObject historyJson = historyJsonArray.getJSONObject(i);
+                        Log.d("HISTORYBEST", historyJson.toString());
+                        historyList.add(new History(
+                                historyJson.getInt("object_id"),
+                                historyJson.getInt("times")
+                        ));
+                    }
+
+                } catch (Exception e) {
+                    callback.onFailure(e);
+                }
+
+                callback.onSuccess(historyList);
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onFailure(error);
+            }
+        });
+
+        ApiHandler.requestQueue.add(request);
     }
 }

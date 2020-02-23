@@ -59,7 +59,7 @@ import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT
 // TODO: add comments and possible refactoring
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, Style.OnStyleLoaded, PermissionsListener {
 
-    private ApiModel api;
+    private ApiHandler api;
 
     private MapView mapView;
     private SymbolManager symbolManager;
@@ -108,10 +108,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
         // Game API handler
-        api = new ApiModel(getString(R.string.api_url), getApplicationContext());
+        api = new ApiHandler(getString(R.string.api_url), getApplicationContext());
 
         // Write on sharedPreferences the new sessionId from signing up on the API, if there's no one inside sharedPreferences.
-        // If it's present just read sessionId from sharedPreferences and set it to the ApiModel
+        // If it's present just read sessionId from sharedPreferences and set it to the ApiHandler
         if (!sharedPreferences.contains("sessionId")) {
             api.registerAsync(new VolleyEventListener() {
                 @Override
@@ -449,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param api
      * @param symbolManager
      */
-    private void getMap(ApiModel api, final SymbolManager symbolManager) {
+    private void getMap(ApiHandler api, final SymbolManager symbolManager) {
         // Delets all annotations/markers on the map if present
         symbolManager.deleteAll();
 
@@ -523,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      *
      * @param api
      */
-    private void getProfile(ApiModel api) {
+    private void getProfile(ApiHandler api) {
         api.getProfileAsync(new VolleyEventListener() {
             @Override
             public void onSuccess(Object returnFromCallback) {

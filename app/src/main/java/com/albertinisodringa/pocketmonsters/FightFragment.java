@@ -101,7 +101,7 @@ public class FightFragment extends Fragment {
             final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
 
             // Get API model
-            final ApiModel api = new ApiModel(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
+            final ApiHandler api = new ApiHandler(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
             // Sets the MapElement's name on the view
             mapElementNameTextView.setText(mapElement.getName());
