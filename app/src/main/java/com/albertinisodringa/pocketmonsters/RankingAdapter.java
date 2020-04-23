@@ -36,10 +36,10 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-            this.playerProfilePicture = view.findViewById(R.id.player_picture_ranking);
-            this.playerNameRanking = view.findViewById(R.id.player_name_ranking);
-            this.experiencePointRanking = view.findViewById(R.id.experience_point_ranking);
-            this.rankingPosition = view.findViewById(R.id.ranking_position);
+            this.playerProfilePicture = view.findViewById(R.id.player_button_circle_image_view);
+            this.playerNameRanking = view.findViewById(R.id.player_name_ranking_text_view);
+            this.experiencePointRanking = view.findViewById(R.id.experience_points_ranking_text_view);
+            this.rankingPosition = view.findViewById(R.id.ranking_position_text_view);
         }
 
         public void setPlayerRanking(Player playerRanking, int position) {

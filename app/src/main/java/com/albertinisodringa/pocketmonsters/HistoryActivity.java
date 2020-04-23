@@ -23,7 +23,7 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        recyclerHistoryView = findViewById(R.id.recyclerHistory);
+        recyclerHistoryView = findViewById(R.id.history_recycler_view);
         recyclerHistoryView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(this);

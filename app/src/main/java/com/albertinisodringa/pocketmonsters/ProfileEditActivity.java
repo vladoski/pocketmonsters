@@ -44,20 +44,20 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         final String playerUsername = getIntent().getStringExtra("profileUsername");
 
-        final EditText editText = findViewById(R.id.nameEditText);
+        final EditText editText = findViewById(R.id.name_edit_text);
         if(playerUsername.equals("null")){
             editText.setText("No name");
         } else {
             editText.setText(playerUsername); // Set username from ProfileActivity that requested the profile from API
         }
 
-        profileImageSetImageView = findViewById(R.id.profileImageSetImageView);
+        profileImageSetImageView = findViewById(R.id.profile_image_uploaded_flag_image_view);
         profileImageSetImageView.setVisibility(View.INVISIBLE);
 
-        uploadedImageView = findViewById(R.id.uploadedImageView);
+        uploadedImageView = findViewById(R.id.uploaded_circle_image_view);
         uploadedImageView.setVisibility(View.INVISIBLE);
 
-        Button button = findViewById(R.id.uploadNewPictureButton);
+        Button button = findViewById(R.id.upload_new_picture_button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.editProfileButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.edit_profile_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // SharedPreferences used for retreiving the sessionId

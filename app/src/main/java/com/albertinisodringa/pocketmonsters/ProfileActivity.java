@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +39,11 @@ public class ProfileActivity extends AppCompatActivity {
                 final String playerUsername = player.getUsername(); // Used because the final requirement inside the anonymous class
 
                 // Set name on TextView
-                TextView nameTextView = findViewById(R.id.name);
+                TextView nameTextView = findViewById(R.id.name_text_view);
                 nameTextView.setText(player.getUsername().equals("null") ? "No name" : player.getUsername()); // Writes no name if the name is null (not set)
 
                 // Set profile image on ImageView
-                CircleImageView profileImageView = findViewById(R.id.uploadedImageView);
+                CircleImageView profileImageView = findViewById(R.id.uploaded_circle_image_view);
                 Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(player.getImage(), 0, player.getImage().length);
 
                 // If the profileImage is not a valid Bitmap, then display default profile image
@@ -56,15 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
                 }
 
                 // Set life points on TextView
-                TextView lifePointsTextView = findViewById(R.id.life_point);
+                TextView lifePointsTextView = findViewById(R.id.life_points_text_view);
                 lifePointsTextView.setText(player.getLifePoints() + " LP");
 
                 // Set experience points on TextView
-                TextView experiencePointsTextView = findViewById(R.id.experience_point);
+                TextView experiencePointsTextView = findViewById(R.id.experience_points_text_view);
                 experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
 
                 // Image used as button for going to the ProfileEditActivity
-                ImageView editImageView = findViewById(R.id.editImageView);
+                ImageView editImageView = findViewById(R.id.edit_button_image_view);
 
                 editImageView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -82,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), toastMessage, Toast.LENGTH_LONG).show();
                 }
 
-                ImageView historyImageView = findViewById(R.id.history_image_view);
+                ImageView historyImageView = findViewById(R.id.history_button_image_view);
 
                 historyImageView.setOnClickListener(new View.OnClickListener() {
                     @Override

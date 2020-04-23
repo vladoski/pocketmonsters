@@ -8,7 +8,7 @@
     tools:context=".ProfileEditActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/uploadedImageView"
+        android:id="@+id/uploaded_circle_image_view"
         android:layout_width="211dp"
         android:layout_height="190dp"
         android:layout_marginTop="50dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/uploadNewPictureButton" />
 
     <TextView
-        android:id="@+id/editProfileTextView"
+        android:id="@+id/edit_profile_title_text_view"
         android:layout_width="407dp"
         android:layout_height="74dp"
         android:layout_marginTop="100dp"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/nameEditText"
+        android:id="@+id/name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="99dp"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editProfileTextView" />
 
     <Button
-        android:id="@+id/uploadNewPictureButton"
+        android:id="@+id/upload_new_picture_button"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="205dp"
         android:layout_height="55dp"
@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
     <Button
-        android:id="@+id/editProfileButton"
+        android:id="@+id/edit_profile_button"
         android:layout_width="205dp"
         android:layout_height="55dp"
         android:layout_marginBottom="100dp"
@@ -82,7 +82,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/profileImageSetImageView"
+        android:id="@+id/profile_image_uploaded_flag_image_view"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="62dp"
@@ -95,7 +95,7 @@
         app:srcCompat="@drawable/yes" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/back_button_image_view"
         android:layout_width="55dp"
         android:layout_height="49dp"
         android:layout_marginStart="60dp"

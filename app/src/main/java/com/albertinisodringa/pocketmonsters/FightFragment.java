@@ -47,13 +47,13 @@ public class FightFragment extends Fragment {
         super.onStart();
 
         // View handlers
-        final TextView actionTitleTextView = getView().findViewById(R.id.fight_text);
-        final TextView actionNameTextView = getView().findViewById(R.id.action_name_TextView);
-        final TextView mapElementNameTextView = getView().findViewById(R.id.map_element_name_TextView);
+        final TextView actionTitleTextView = getView().findViewById(R.id.fight_fragment_title_text_view);
+        final TextView actionNameTextView = getView().findViewById(R.id.action_name_text_view);
+        final TextView mapElementNameTextView = getView().findViewById(R.id.map_element_name_text_view);
 
-        final ImageView mapElementPictureImageView = getView().findViewById(R.id.map_element_picture);
-        final ImageView yesButtonImageView = getView().findViewById(R.id.yes_button);
-        final ImageView noButtonImageView = getView().findViewById(R.id.no_button);
+        final ImageView mapElementPictureImageView = getView().findViewById(R.id.map_element_image_view);
+        final ImageView yesButtonImageView = getView().findViewById(R.id.accept_fight_button_image_view);
+        final ImageView noButtonImageView = getView().findViewById(R.id.decline_fight_button_image_view);
 
         // Get data from the bundle passed from MainActivity
         final Bundle mapElementDataBundle = getArguments();

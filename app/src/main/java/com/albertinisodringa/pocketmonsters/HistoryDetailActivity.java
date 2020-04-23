@@ -43,7 +43,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
                     }
                 }
 
-                helperFunction(mapElement, actionCounter);
+                getMapElementImageCallback(mapElement, actionCounter);
 
             }
 
@@ -55,7 +55,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
 
     }
 
-    private void helperFunction(final MapElement mapElement, final int counter) {
+    private void getMapElementImageCallback(final MapElement mapElement, final int counter) {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
         ApiHandler api = new ApiHandler(sharedPreferences.getString("sessionId", null), getString(R.string.api_url), getApplicationContext());
 
@@ -70,15 +70,15 @@ public class HistoryDetailActivity extends AppCompatActivity {
 
                 Bitmap imageBitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
 
-                TextView mapElementNameTextView = findViewById(R.id.mapElementNameTextView);
-                TextView counterTextView = findViewById(R.id.counterTextView);
-                TextView sizeTextView = findViewById(R.id.sizeTextView);
+                TextView mapElementNameTextView = findViewById(R.id.map_element_name_text_view);
+                TextView counterTextView = findViewById(R.id.counter_text_view);
+                TextView sizeTextView = findViewById(R.id.size_text_view);
 
                 mapElementNameTextView.setText(mapElement.getName());
                 counterTextView.setText("Times: " + counter);
                 sizeTextView.setText(mapElement.getSize().toString());
 
-                ImageView mapElementImageView = findViewById(R.id.mapElementImageView);
+                ImageView mapElementImageView = findViewById(R.id.map_element_image_view);
                 mapElementImageView.setImageBitmap(imageBitmap);
             }
 

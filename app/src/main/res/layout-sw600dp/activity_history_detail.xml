@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout3"
+    android:id="@+id/LinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
     <TextView
-        android:id="@+id/counterTextView"
+        android:id="@+id/counter_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="297dp"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/mapElementNameTextView"
+        android:id="@+id/map_element_name_text_view"
         android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="227dp"
@@ -36,24 +36,24 @@
         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/sizeTextView"
+        app:layout_constraintBottom_toTopOf="@id/size_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/mapElementImageView"
+        android:id="@+id/map_element_image_view"
         android:layout_width="230dp"
         android:layout_height="230dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="118dp"
         android:layout_marginBottom="103dp"
-        app:layout_constraintBottom_toTopOf="@+id/sizeTextView"
+        app:layout_constraintBottom_toTopOf="@id/size_text_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButtonImageView"
+        app:layout_constraintTop_toBottomOf="@id/back_button_image_view"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/backButtonImageView"
+        android:id="@+id/back_button_image_view"
         android:layout_width="55dp"
         android:layout_height="49dp"
         android:layout_marginStart="60dp"
@@ -68,7 +68,7 @@
         app:srcCompat="@drawable/left_arrow" />
 
     <TextView
-        android:id="@+id/sizeTextView"
+        android:id="@+id/size_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="67dp"
@@ -78,7 +78,7 @@
         android:textColor="@color/common_google_signin_btn_text_dark_pressed"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/counterTextView"
+        app:layout_constraintBottom_toTopOf="@id/counter_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />

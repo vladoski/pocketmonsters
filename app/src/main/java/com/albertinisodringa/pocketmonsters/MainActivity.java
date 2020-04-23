@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Create the map
         Mapbox.getInstance(this, getString(R.string.mapboxapi_access_token));
         setContentView(R.layout.main_activity_map);
-        mapView = findViewById(R.id.map);
+        mapView = findViewById(R.id.map_map_view);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-                        transaction.replace(R.id.fragment_container, fightFragment);
+                        transaction.replace(R.id.fragment_frame_layout, fightFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
                     } else {
@@ -533,15 +533,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 // Set life points on TextView
-                TextView lifePointsTextView = findViewById(R.id.player_life_point);
+                TextView lifePointsTextView = findViewById(R.id.player_life_points_text_view);
                 lifePointsTextView.setText(player.getLifePoints() + " LP");
 
                 // Set experience points on TextView
-                TextView experiencePointsTextView = findViewById(R.id.player_experience_point);
+                TextView experiencePointsTextView = findViewById(R.id.player_experience_points_text_view);
                 experiencePointsTextView.setText(player.getExperiencePoints() + " XP");
 
                 // Set profile image on ImageView
-                CircleImageView profileImageView = findViewById(R.id.player_picture_ranking);
+                CircleImageView profileImageView = findViewById(R.id.player_button_circle_image_view);
                 Bitmap profileImageBitmap = BitmapFactory.decodeByteArray(player.getImage(), 0, player.getImage().length);
 
                 // If the profileImage is not a valid Bitmap, then display default profile image

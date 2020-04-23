@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +41,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-            this.historyCircleImageView = view.findViewById(R.id.historyCircleImageView);
-            this.historyMapElementName = view.findViewById(R.id.historyMapElementTextView);
-            this.historyStatsTextView = view.findViewById(R.id.historyStatsTextView);
+            this.historyCircleImageView = view.findViewById(R.id.history_button_circle_image_view);
+            this.historyMapElementName = view.findViewById(R.id.history_map_element_text_view);
+            this.historyStatsTextView = view.findViewById(R.id.history_stats_text_view);
 
             this.intent = new Intent(getApplicationContext(), HistoryDetailActivity.class);
         }
@@ -70,7 +69,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                         }
                     }
 
-                    helperFunctionMap(mapElement, historyElement);
+                    getMapElementImageCallback(mapElement, historyElement);
                 }
 
                 @Override
@@ -80,8 +79,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             });
         }
 
-        private void helperFunctionMap(MapElement mapElement, final History historyElement) {
-            Log.d("HISTORYMAPELEMENTNAME", mapElement.toString());
+        private void getMapElementImageCallback(MapElement mapElement, final History historyElement) {
             this.historyMapElementName.setText(mapElement.getName());
             this.historyStatsTextView.setText("Counter: " + historyElement.getCounter());
 
@@ -95,7 +93,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                         historyElement.setImage((byte[]) returnFromCallback);
                     }
 
-                    helperFunctionImage(historyElement);
+                    setHistoryCircleImageViewCallback(historyElement);
 
                     historyCircleImageView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -115,7 +113,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             });
         }
 
-        private void helperFunctionImage(History historyElement) {
+        private void setHistoryCircleImageViewCallback(History historyElement) {
             // Set profile image on ImageView
             Bitmap historyImageBitmap = BitmapFactory.decodeByteArray(historyElement.getImage(), 0, historyElement.getImage().length);
 
@@ -127,7 +125,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 historyCircleImageView.setImageBitmap(historyImageBitmap);
             }
         }
-
     }
 
     @Override

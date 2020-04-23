@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/map"
+        android:id="@+id/map_map_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +19,7 @@
 
 
     <ImageView
-        android:id="@+id/ranking"
+        android:id="@+id/ranking_button_image_view"
         android:layout_width="54dp"
         android:layout_height="54dp"
         android:layout_marginEnd="10dp"
@@ -31,7 +31,7 @@
         app:srcCompat="@drawable/cup" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/FooterLinearLayout"
         android:layout_width="140dp"
         android:layout_height="54dp"
         android:layout_marginStart="10dp"
@@ -43,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/player_picture_ranking"
+            android:id="@+id/player_button_circle_image_view"
             android:layout_width="54dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -51,6 +51,7 @@
             app:civ_border_width="1dp" />
 
         <LinearLayout
+            android:id="@+id/StatsLinearLayout"
             android:layout_width="76dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -58,7 +59,7 @@
             android:padding="2dp">
 
             <TextView
-                android:id="@+id/player_life_point"
+                android:id="@+id/player_life_points_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:background="@drawable/lp_bar"
@@ -71,7 +72,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/player_experience_point"
+                android:id="@+id/player_experience_points_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:background="@drawable/xp_bar"
@@ -85,7 +86,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/player_position"
+        android:id="@+id/player_position_image_view"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="60dp"
@@ -97,7 +98,7 @@
         app:srcCompat="@drawable/location" />
 
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/fragment_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
