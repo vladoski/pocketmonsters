@@ -248,9 +248,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Handles click on symbols on the map (monsters and candy)
         symbolManager.addClickListener(new OnSymbolClickListener() {
+            private boolean arePermissionGranted;
+
             @Override
             public void onAnnotationClick(Symbol symbol) {
-                if (mapboxMap.getLocationComponent().getLastKnownLocation() != null) {
+                if (arePermissionGranted && mapboxMap.getLocationComponent().getLastKnownLocation() != null) {
 
                     LatLng userPositionLatLng = new LatLng(
                             mapboxMap.getLocationComponent().getLastKnownLocation().getLatitude(),
@@ -280,7 +282,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Toast.makeText(getApplicationContext(), NO_LOCATION_ENABLED_ERROR, Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+
+            // Useful to pass parameters in anonymous classes.
+            // In this case is being used to check if location permissions are granted
+            private OnSymbolClickListener init(boolean arePermissionGranted) {
+                this.arePermissionGranted = arePermissionGranted;
+                return this;
+            }
+
+        }.init(PermissionsManager.areLocationPermissionsGranted(this)));
 
         // Set camera position on Milan
         CameraPosition position = new CameraPosition.Builder()
@@ -298,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             permissionsManager.requestLocationPermissions(this);
         }
 
-        // Listenes if the FightFragment has been closed by the user, so the map can refresh
+        // Listens if the FightFragment has been closed by the user, so the map can refresh
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             public void onBackStackChanged() {
                 getMap(api, symbolManager);
