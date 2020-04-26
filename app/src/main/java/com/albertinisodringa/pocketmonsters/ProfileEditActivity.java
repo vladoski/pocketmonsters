@@ -22,6 +22,9 @@ import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * ProfileEditActivity lets the user to edit its name and uploading a new photo for his profile
+ */
 public class ProfileEditActivity extends AppCompatActivity {
 
     private static final String PROFILE_EDITED_SUCCESSFULLY_MESSAGE = "The profile has been edited successfully";
@@ -33,7 +36,13 @@ public class ProfileEditActivity extends AppCompatActivity {
     private Bitmap profileImage = null;
     private boolean isProfileImageSet = false;
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    /**
+     * The Profile image set image view.
+     */
     ImageView profileImageSetImageView = null;
+    /**
+     * The Uploaded image view.
+     */
     CircleImageView uploadedImageView = null;
     final private int REQUEST_CODE = 1; // Code useful for the result of the startActivity
 
@@ -101,7 +110,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Exception error) {
-                            ApiModelErrorHandler.handle(error, getApplicationContext());
+                            ApiErrorHandler.handle(error, getApplicationContext());
                         }
                     });
                 } else {
@@ -151,7 +160,12 @@ public class ProfileEditActivity extends AppCompatActivity {
         }
     }
 
-    // Goes back to ProfileActivity if back button is clicked
+    /**
+     * On back click.
+     *
+     * @param v the view
+     */
+// Goes back to ProfileActivity if back button is clicked
     public void onBackClick(View v) {
         Log.d("ProfileActivity", "Back tap to MainActivity");
         super.onBackPressed();

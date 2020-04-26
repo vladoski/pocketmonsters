@@ -56,6 +56,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.mapbox.mapboxsdk.style.layers.Property.ICON_ROTATION_ALIGNMENT_VIEWPORT;
 
 
+/**
+ * The Main Activity of the project
+ * This Activity implements the map of the game and its annotations (MapElements) with MapBox
+ * Lets the user interact with the MapElements in the map (fighting/eating) and watching some of his stats
+ * Also from this Activity, the user can go to the RankingActivity that displays the top 20 best players of the game and to his profile
+ */
 // TODO: add comments and possible refactoring
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, Style.OnStyleLoaded, PermissionsListener {
 
@@ -75,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location location;
 
     private final Gson gson = new Gson();
+
+    private OnSymbolClickListener oldOnSymbolClickListener;
 
     private static final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
     private static final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
@@ -131,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public void onFailure(Exception error) {
-                    ApiModelErrorHandler.handle(error, getApplicationContext());
+                    ApiErrorHandler.handle(error, getApplicationContext());
                 }
             });
         } else {
@@ -246,51 +254,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         symbolManager.setIconTranslate(new Float[]{-4f, 5f});
         symbolManager.setIconRotationAlignment(ICON_ROTATION_ALIGNMENT_VIEWPORT);
 
-        // Handles click on symbols on the map (monsters and candy)
-        symbolManager.addClickListener(new OnSymbolClickListener() {
-            private boolean arePermissionGranted;
-
-            @Override
-            public void onAnnotationClick(Symbol symbol) {
-                if (arePermissionGranted && mapboxMap.getLocationComponent().getLastKnownLocation() != null) {
-
-                    LatLng userPositionLatLng = new LatLng(
-                            mapboxMap.getLocationComponent().getLastKnownLocation().getLatitude(),
-                            mapboxMap.getLocationComponent().getLastKnownLocation().getLongitude()
-                    );
-
-                    // Check if the MapElement is in the 50m radius to be fought/eaten
-                    if (symbol.getLatLng().distanceTo(userPositionLatLng) < ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS || true) {
-
-                        FightFragment fightFragment = new FightFragment();
-
-                        Bundle args = new Bundle();
-
-                        // Pass the MapElement data (annotation) to the fragment
-                        args.putString("mapElementData", symbol.getData().getAsJsonObject().toString());
-                        fightFragment.setArguments(args);
-
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                        transaction.replace(R.id.fragment_frame_layout, fightFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                    } else {
-                        Toast.makeText(getApplicationContext(), MAPELEMENT_OUT_OF_PLAYER_RANGE_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), NO_LOCATION_ENABLED_ERROR, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            // Useful to pass parameters in anonymous classes.
-            // In this case is being used to check if location permissions are granted
-            private OnSymbolClickListener init(boolean arePermissionGranted) {
-                this.arePermissionGranted = arePermissionGranted;
-                return this;
-            }
-
-        }.init(PermissionsManager.areLocationPermissionsGranted(this)));
+        symbolClickListener(false);
 
         // Set camera position on Milan
         CameraPosition position = new CameraPosition.Builder()
@@ -342,6 +306,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    /**
+     * Show user last location.
+     */
     public void showUserLastLocation() {
         // Request location updates once you know location permissions have been granted
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
@@ -378,6 +345,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationComponent.setRenderMode(RenderMode.COMPASS);
     }
 
+    /**
+     * On center button pressed.
+     *
+     * @param view the view
+     */
     public void onCenterButtonPressed(View view) {
         // Center on device's location, if it's known
         if (location != null) {
@@ -391,6 +363,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO: else, what if the device's location is not known
     }
 
+    /**
+     * On profile image click.
+     *
+     * @param v the v
+     */
     public void onProfileImageClick(View v) {
         // Go to ProfileActivity
         Log.d("MainActivity", "profile tap");
@@ -398,6 +375,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
+    /**
+     * On ranking click.
+     *
+     * @param v the v
+     */
     public void onRankingClick(View v) {
         // Go to RankingActivity
         Log.d("MainActivity", "ranking tap");
@@ -422,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        symbolClickListener(true);
     }
 
 
@@ -434,6 +417,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         private final WeakReference<MainActivity> activityWeakReference;
         private MainActivity mainActivity;
 
+        /**
+         * Instantiates a new Location listening callback.
+         *
+         * @param activity the activity
+         */
         LocationListeningCallback(MainActivity activity) {
             this.activityWeakReference = new WeakReference<>(activity);
             mainActivity = activity;
@@ -456,8 +444,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Helper function
      * Gets or refreshes the MapElements on the MapBox Map
      *
-     * @param api
-     * @param symbolManager
+     * @param api           ApiHandler
+     * @param symbolManager MapBox SymbolManager
      */
     private void getMap(ApiHandler api, final SymbolManager symbolManager) {
         // Delets all annotations/markers on the map if present
@@ -522,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
@@ -531,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Helper function
      * Gets the player profile from the API, then edits the two TextViews (life points and experience points)
      *
-     * @param api
+     * @param api ApiHandler
      */
     private void getProfile(ApiHandler api) {
         api.getProfileAsync(new VolleyEventListener() {
@@ -565,8 +553,70 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
+    }
+
+    /**
+     * Helper function
+     * Creates symbolClickListeners for symbolManager (all annotations on the map)
+     *
+     * @param removeOldSymbolClickListeners if true, removes old click listeners
+     */
+    private void symbolClickListener(boolean removeOldSymbolClickListeners) {
+        // Handles click on symbols on the map (monsters and candy)
+
+        if (removeOldSymbolClickListeners) {
+            symbolManager.removeClickListener(oldOnSymbolClickListener);
+        }
+
+        OnSymbolClickListener onSymbolClickListener = new OnSymbolClickListener() {
+            private boolean arePermissionGranted;
+
+            @Override
+            public void onAnnotationClick(Symbol symbol) {
+                if (arePermissionGranted && mapboxMap.getLocationComponent().getLastKnownLocation() != null) {
+
+                    LatLng userPositionLatLng = new LatLng(
+                            mapboxMap.getLocationComponent().getLastKnownLocation().getLatitude(),
+                            mapboxMap.getLocationComponent().getLastKnownLocation().getLongitude()
+                    );
+
+                    // Check if the MapElement is in the 50m radius to be fought/eaten
+                    if (symbol.getLatLng().distanceTo(userPositionLatLng) < ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS || true) {
+
+                        FightFragment fightFragment = new FightFragment();
+
+                        Bundle args = new Bundle();
+
+                        // Pass the MapElement data (annotation) to the fragment
+                        args.putString("mapElementData", symbol.getData().getAsJsonObject().toString());
+                        fightFragment.setArguments(args);
+
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                        transaction.replace(R.id.fragment_frame_layout, fightFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    } else {
+                        Toast.makeText(getApplicationContext(), MAPELEMENT_OUT_OF_PLAYER_RANGE_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), NO_LOCATION_ENABLED_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            // Useful to pass parameters in anonymous classes.
+            // In this case is being used to check if location permissions are granted
+            private OnSymbolClickListener init(boolean arePermissionGranted) {
+                this.arePermissionGranted = arePermissionGranted;
+                return this;
+            }
+
+        }.init(PermissionsManager.areLocationPermissionsGranted(this));
+
+        this.oldOnSymbolClickListener = onSymbolClickListener;
+        symbolManager.addClickListener(onSymbolClickListener);
     }
 }

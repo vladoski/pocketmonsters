@@ -20,10 +20,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
+/**
+ * HistoryAdapter is used by HistoryActivity to implement its RecyclerView
+ * Provides a binding from the dataset to the views that are displayed in the Recyclerview
+ */
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private List<History> historyList;
 
+    /**
+     * Instantiates a new History adapter.
+     *
+     * @param historyList the history list
+     */
     public HistoryAdapter(List<History> historyList) {
         this.historyList = historyList;
     }
@@ -31,6 +40,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     /* Provide a reference to the views for each data item
         you provide access to all the views for a data item in a view holder. */
 
+    /**
+     * ViewHolder deals with all the views that need to be displayed and repeated in the RecyclerView
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView historyCircleImageView;
@@ -39,6 +51,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         private Resources res;
         private Intent intent;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param view the view
+         */
         public ViewHolder(View view) {
             super(view);
             this.historyCircleImageView = view.findViewById(R.id.history_button_circle_image_view);
@@ -48,6 +65,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             this.intent = new Intent(getApplicationContext(), HistoryDetailActivity.class);
         }
 
+        /**
+         * Sets the HistoryElement data to the views in the ViewHolder
+         *
+         * @param historyElement the history element
+         */
         public void setHistory(final History historyElement) {
 
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.sharedpreferences_key), Context.MODE_PRIVATE);
@@ -74,7 +96,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
                 @Override
                 public void onFailure(Exception error) {
-                    ApiModelErrorHandler.handle(error, getApplicationContext());
+                    ApiErrorHandler.handle(error, getApplicationContext());
                 }
             });
         }
@@ -108,7 +130,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
                 @Override
                 public void onFailure(Exception error) {
-                    ApiModelErrorHandler.handle(error, getApplicationContext());
+                    ApiErrorHandler.handle(error, getApplicationContext());
                 }
             });
         }

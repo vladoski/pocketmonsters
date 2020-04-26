@@ -12,6 +12,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RankingActivity implements a RecycleView that displays the top 20 players in the game by XP
+ */
 public class RankingActivity extends AppCompatActivity {
 
     private RecyclerView recyclerRankingView;
@@ -52,13 +55,18 @@ public class RankingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
 
     }
 
-    // Go back to MainActivity (map)
+    /**
+     * On back click.
+     *
+     * @param v the view
+     */
+// Go back to MainActivity (map)
     public void onBackClick(View v) {
         super.onBackPressed();
     }

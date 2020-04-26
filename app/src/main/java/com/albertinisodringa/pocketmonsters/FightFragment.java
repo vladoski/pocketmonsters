@@ -19,9 +19,30 @@ import org.json.JSONObject;
 
 import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
+/**
+ * FightFragment implements the fragment for fighting or eating the MapElement.
+ * The fragment calls fighteat from the API.
+ * Displays some MapElement attributes and gives the user the possibility to fight/eat the MapElement.
+ */
 public class FightFragment extends Fragment {
 
+    /**
+     * The Map element.
+     */
     MapElement mapElement = null;
+
+    /**
+     * The Is player dead message.
+     */
+    final String IS_PLAYER_DEAD_MESSAGE = "You have been slain!";
+    /**
+     * The Candy eaten message.
+     */
+    final String CANDY_EATEN_MESSAGE = "Gnam. What a delicious candy!";
+    /**
+     * The Monster killed message.
+     */
+    final String MONSTER_KILLED_MESSAGE = "You have killed the monster!";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +80,8 @@ public class FightFragment extends Fragment {
         final Bundle mapElementDataBundle = getArguments();
 
         try {
-            final JSONObject mapElementDataJson = new JSONObject(mapElementDataBundle.getString("mapElementData")); // Create JSONObject from the JSON string passed in the bundle
+            // Create JSONObject from the JSON string passed in the bundle
+            final JSONObject mapElementDataJson = new JSONObject(mapElementDataBundle.getString("mapElementData"));
 
             // MapElementSize selector
             MapElementSize mapElementSize;
@@ -122,7 +144,7 @@ public class FightFragment extends Fragment {
 
                 @Override
                 public void onFailure(Exception error) {
-                    ApiModelErrorHandler.handle(error, getApplicationContext());
+                    ApiErrorHandler.handle(error, getApplicationContext());
                 }
             });
 
@@ -141,11 +163,11 @@ public class FightFragment extends Fragment {
                                 // String message after eating/slaying the monster
                                 String fightEatResponseToastString;
                                 if (fightEatResponse.isPlayerDead()) {
-                                    fightEatResponseToastString = "You have been slain!";
+                                    fightEatResponseToastString = IS_PLAYER_DEAD_MESSAGE;
                                 } else if (!fightEatResponse.isPlayerDead() && mapElementType.equals("candy")) {
-                                    fightEatResponseToastString = "Gnam. What a delicious candy!";
+                                    fightEatResponseToastString = CANDY_EATEN_MESSAGE;
                                 } else {
-                                    fightEatResponseToastString = "You have killed the monster!";
+                                    fightEatResponseToastString = MONSTER_KILLED_MESSAGE;
                                 }
 
                                 fightEatResponseToastString += "\nLP: " + fightEatResponse.getLifePoints() + " XP: " + fightEatResponse.getExperiencePoints();
@@ -153,13 +175,13 @@ public class FightFragment extends Fragment {
                                 Toast.makeText(getApplicationContext(), fightEatResponseToastString, Toast.LENGTH_SHORT).show();
                                 getFragmentManager().popBackStack(); // closes the Fragment
                             } catch (JSONException e) {
-                                ApiModelErrorHandler.handle(e, getApplicationContext());
+                                ApiErrorHandler.handle(e, getApplicationContext());
                             }
                         }
 
                         @Override
                         public void onFailure(Exception error) {
-                            ApiModelErrorHandler.handle(error, getApplicationContext());
+                            ApiErrorHandler.handle(error, getApplicationContext());
                         }
                     });
                 }
@@ -174,7 +196,7 @@ public class FightFragment extends Fragment {
             });
 
         } catch (JSONException e) {
-            ApiModelErrorHandler.handle(e, getApplicationContext());
+            ApiErrorHandler.handle(e, getApplicationContext());
         }
 
     }

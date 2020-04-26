@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * HistoryDetailAcitivity implements the activity that shows to the user more data about the MapElement that he has clicked on the previous Activity (HistoryActivity)
+ */
 public class HistoryDetailActivity extends AppCompatActivity {
 
     @Override
@@ -49,7 +52,7 @@ public class HistoryDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
 
@@ -84,12 +87,17 @@ public class HistoryDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
 
-    // Goes back to ProfileActivity if back button is clicked
+    /**
+     * On back click.
+     *
+     * @param v the view
+     */
+// Goes back to ProfileActivity if back button is clicked
     public void onBackClick(View v) {
         Log.d("ProfileActivity", "Back tap to MainActivity");
         super.onBackPressed();

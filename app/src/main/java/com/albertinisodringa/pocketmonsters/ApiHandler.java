@@ -484,14 +484,6 @@ public class ApiHandler {
             public void onResponse(JSONObject response) {
                 Log.d("ApiHandler", response.toString());
 
-                String sessionId = "";
-
-                try {
-                    sessionId = response.getString("session_id");
-                } catch (JSONException e) {
-                    callback.onFailure(e);
-                }
-
                 boolean isPlayerDead = false;
 
                 FightEatResponse fightEatResponse = new FightEatResponse();
@@ -523,6 +515,12 @@ public class ApiHandler {
         ApiHandler.requestQueue.add(request);
     }
 
+    /**
+     * Implements the API call to retrieve the player fighting history.
+     * Returns a History list in the callback with all the MapElement ids and the times that the player has eaten/fought those.
+     *
+     * @param callback the callback
+     */
     public void getHistoryAsync(final VolleyEventListener callback) {
         final String apiUrlRequest = "/gethistory.php";
         JSONObject requestJson = new JSONObject();

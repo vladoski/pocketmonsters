@@ -13,6 +13,10 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * HistoryActivity implements the activity that deals with the History of a player.
+ * The history of a player is just a list of which MapElements has he dealt with (fought/eaten)
+ */
 public class HistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerHistoryView;
     private RecyclerView.Adapter historyAdapter;
@@ -49,19 +53,24 @@ public class HistoryActivity extends AppCompatActivity {
 
                 Log.d("HistoryCount", historyList.size() + "");
 
-                // Create an instance of RankingAdapter to create the recycler view with players data
+                // Create an instance of HistoryAdapter to create the recycler view with players data
                 historyAdapter = new HistoryAdapter(historyList);
                 recyclerHistoryView.setAdapter(historyAdapter);
             }
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
 
-    // Goes back to ProfileActivity if back button is clicked
+    /**
+     * On back click.
+     *
+     * @param v the view
+     */
+// Goes back to ProfileActivity if back button is clicked
     public void onBackClick(View v) {
         Log.d("ProfileActivity", "Back tap to MainActivity");
         super.onBackPressed();

@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * ProfileActivity implements the user interface dealing with the player profile that displays his stats
+ * Also from this Activity, the player can open the ProfileEditActivity and the HistoryActivity
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     @Override
@@ -94,12 +98,17 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception error) {
-                ApiModelErrorHandler.handle(error, getApplicationContext());
+                ApiErrorHandler.handle(error, getApplicationContext());
             }
         });
     }
 
-    // Go back to MainActivity (map)
+    /**
+     * On back click.
+     *
+     * @param v the view
+     */
+// Go back to MainActivity (map)
     public void onBackClick(View v) {
         Log.d("ProfileActivity", "Back tap to MainActivity");
         super.onBackPressed();

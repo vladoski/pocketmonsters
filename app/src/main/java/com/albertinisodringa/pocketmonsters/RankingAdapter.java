@@ -15,10 +15,19 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * RankingAdapter is used by RankingActivity to implement its RecyclerView
+ * Provides a binding from the dataset to the views that are displayed in the Recyclerview
+ */
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHolder> {
 
     private List<Player> playerList;
 
+    /**
+     * Instantiates a new Ranking adapter.
+     *
+     * @param playerList the player list
+     */
     public RankingAdapter(List<Player> playerList) {
         this.playerList = playerList;
     }
@@ -26,6 +35,9 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
     /* Provide a reference to the views for each data item
         you provide access to all the views for a data item in a view holder. */
 
+    /**
+     * ViewHolder deals with all the views that need to be displayed and repeated in the RecyclerView
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView playerProfilePicture;
@@ -34,6 +46,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         private TextView rankingPosition;
         private Resources res;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param view the view
+         */
         public ViewHolder(View view) {
             super(view);
             this.playerProfilePicture = view.findViewById(R.id.player_button_circle_image_view);
@@ -42,6 +59,12 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
             this.rankingPosition = view.findViewById(R.id.ranking_position_text_view);
         }
 
+        /**
+         * Sets the player data to the views in the ViewHolder
+         *
+         * @param playerRanking the player ranking
+         * @param position      the position
+         */
         public void setPlayerRanking(Player playerRanking, int position) {
 
             // Set profile image on ImageView
