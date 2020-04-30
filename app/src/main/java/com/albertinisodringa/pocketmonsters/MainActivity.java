@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     );
 
                     // Check if the MapElement is in the 50m radius to be fought/eaten
-                    if (symbol.getLatLng().distanceTo(userPositionLatLng) < ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS || true) {
+                    if (symbol.getLatLng().distanceTo(userPositionLatLng) < ACTION_DISTANCE_FROM_PLAYER_LOCATION_IN_METERS) {
 
                         FightFragment fightFragment = new FightFragment();
 
